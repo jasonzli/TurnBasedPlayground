@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel; //Only used in full implementation of INotifyPropertyChanged
-using System.Runtime.CompilerServices; //Only used in full implementation of INotifyPropertyChanged
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices; //Only used in full implementation of INotifyPropertyChanged
 using UnityEngine;
 using Random = System.Random;
 
@@ -51,38 +52,7 @@ namespace Code.ObservableTest2
         }
     }
     
-    /// <summary>
-    /// This is a simplified implementation version of the INotifyPropertyChanged interface based on my own understanding
-    /// This one removes all the additional caller and property names that are passed through, simplifying what the listeners can do
-    /// To me, this is an acceptable tradeoff, as the view objects that listen should also have contexts.
-    ///
-    /// So this viewmodel only knows to update you *that something changed* and also this doesn't stop you from
-    /// using Observable<T> in the viewmodel itself too.
-    /// </summary>
-    public abstract class ViewModelSimpleBase : MonoBehaviour, ISimpleNotifyPropertyChanged, IDisposable
-    {
-        public Action PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged()
-        {
-            PropertyChanged?.Invoke();
-        }
-
-        protected bool SetField<T>(ref T field, T value)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            NotifyPropertyChanged();
-            return true;
-        }
-
-        /// <summary>
-        /// You should be implementing this! Free up all memory and close up shop
-        /// "Deconstructors" aren't in C#, so this is the best we can do
-        /// </summary>
-        public abstract void Dispose();
-    }
-
+    
     /// <summary>
     /// Observable is the essential class for databinding *in the model* imo. It can also be used for the viewmodel.
     /// Observable is a class that wraps a basic data type and implements the ISimpleNotifyPropertyChanged interface.
@@ -98,19 +68,34 @@ namespace Code.ObservableTest2
             get => _value;
             set => SetField(ref _value, value);
         }
-        public static implicit operator Observable<T>(int i) => new Observable<T> {Value = (T) (object) i};
-        public static implicit operator Observable<T>(bool i) => new Observable<T> {Value = (T) (object) i};
-        public static implicit operator Observable<T>(float i) => new Observable<T> {Value = (T) (object) i};
-        public static implicit operator Observable<T>(string i) => new Observable<T> {Value = (T) (object) i};
-        public static implicit operator Observable<T>(char i) => new Observable<T> {Value = (T) (object) i};
-        
+
+        //Using Observables in basic evaluations is fine, we cannot do the same the other way.
         public static implicit operator int(Observable<T> i) => i.Value as int? ?? 0;
         public static implicit operator bool(Observable<T> i) => i.Value as bool? ?? false;
         public static implicit operator float(Observable<T> i) => i.Value as float? ?? 0f;
         public static implicit operator string(Observable<T> i) => i.Value.ToString();
         public static implicit operator char(Observable<T> i) => i.Value as char? ?? ' ';
     }
+
     
+    /// <summary>
+    /// This is a simplified implementation version of the INotifyPropertyChanged interface based on my own understanding
+    /// This one removes all the additional caller and property names that are passed through, simplifying what the listeners can do
+    /// To me, this is an acceptable tradeoff, as the view objects that listen should also have contexts.
+    ///
+    /// So this viewmodel only knows to update you *that something changed* and also this doesn't stop you from
+    /// using Observable<T> in the viewmodel itself too. And that's what you'll do: shove this baby fully of
+    /// Observables and then listen to them in the view.
+    /// </summary>
+    public abstract class ViewModelSimpleBase : MonoBehaviour, IDisposable
+    {
+        /// <summary>
+        /// You should be implementing this! Free up all memory and close up shop
+        /// "Deconstructors" aren't in C#, so this is the best we can do
+        /// </summary>
+        public abstract void Dispose();
+    }
+
     /// <summary>
     /// The full INotifyPropertyChanged interface implementation as given by the snippet.
     /// This one uses the PropertyChangedEventHandler from System.ComponentModel to send the object and property name
@@ -142,40 +127,19 @@ namespace Code.ObservableTest2
     
     /// <summary>
     /// Example Model definition that uses the Observables
-    ///
-    /// Pro of this setup: it's clear and easy to propagate information in and out.
     /// </summary>
     public class PlayerModel
     {
-        private Observable<int> _health;
-        
-        public Observable<int>  Health
-        {
-            get => _health;
-            set => _health.Value = value;
-        }
-        
-        private Observable<string>  _name;
-        public Observable<string>  Name
-        {
-            get => _name;
-            set => _name.Value = value;
-        }
-
-        private Observable<bool> _guard;
-        public Observable<bool> Guard
-        {
-            get => _guard;
-            set => _guard.Value = value;
-        }
-
+        public int Health { get; set; }
+        public string Name { get; set; }
+        public bool Guard { get; set; }
         public PlayerModel(string name, int health, bool guard)
         {
-            _health = health;
-            _name = name;
-            _guard = guard;
+            Health = health;
+            Name = name;
+            Guard = guard;
         }
-
+        
         public void RandomValues()
         {
             Random random = new Random();
@@ -185,78 +149,44 @@ namespace Code.ObservableTest2
         }
     }
     
-    /*
-     * What's better?
-     *
-     * But even if I did this, I'd still have to get a means of propagating that information *forward* to the view model
-     * public class PlayerModel{
-     *  public int Health {get;set;}
-     *  public string Name {get;set;}
-     * }
-     */
     public class VM : ViewModelSimpleBase
     {
-        private PlayerModel player;
-        
-        private int _health;
-        public int Health
-        {
-            get => _health;
-            set => SetField(ref _health, value);
-        }
+        private PlayerModel referenceModel;
 
-        private int _MaxHealth;
-        public Observable<int> MaxHealth
-        {
-            get => _MaxHealth;
-            set => SetField(ref _MaxHealth, value);
-        }
+        public Observable<int> Health { get; set; } = new Observable<int>();
+        public Observable<string> Name { get; set; } = new Observable<string>();
+        public Observable<bool> Guard { get; set; } = new Observable<bool>();
 
         [ContextMenu("Initialize")]
         public void Intialize()
         {
-            player = new PlayerModel("Steven", 100, true);
-            Debug.Log("Health: " + player.Health);
-            Debug.Log("Name: " + player.Name);
-            Debug.Log("Guard: " + player.Guard);
+            referenceModel = new PlayerModel("Steven", 100, true);
+            SetupValuesFromModel(referenceModel);
+            Debug.Log("Health: " + Health);
+            Debug.Log("Name: " + Name);
+            Debug.Log("Guard: " + Guard);
             
-            player.Health.PropertyChanged += HealthAlert;
-            player.Health= 50;
-            
-            player.Name.PropertyChanged += NameAlert;
-            player.Name = "Bob";
-
-            player.Guard.PropertyChanged += GuardAlert;
-
-            this.PropertyChanged += OtherAlert;
-            MaxHealth.PropertyChanged += HealthAlert;
-            
-            Health = 10;
-
-            player.Health = 20;
-
-            Health = 10;
-
-            Health = 12; //Note that data persists between runs
-            
-            player.RandomValues();
+            Health.PropertyChanged += HealthAlert;
+            Name.PropertyChanged += NameAlert;
+            Guard.PropertyChanged += GuardAlert;
         }
-
-        private void GuardAlert(bool guarded)
-        {
-            Debug.Log("Guard Changed: " + guarded);
-        }
-
+        
         [ContextMenu("Random")]
         public void Random()
         {
-            player.RandomValues();
-        }
-        public void OtherAlert()
-        {
-            Debug.Log($"Other health changed {Health + player.Health}");
+            referenceModel.RandomValues();
+            SetupValuesFromModel(referenceModel);
         }
         
+        // Changes to observables *must* be explicit, which is correct
+        private bool SetupValuesFromModel(PlayerModel playerModel)
+        {
+            Health.Value = playerModel.Health;
+            Name.Value = playerModel.Name;
+            Guard.Value = playerModel.Guard;
+            return true;
+        }
+
         public void HealthAlert(int i)
         {
             Debug.Log("Health Changed: " + i);
@@ -265,10 +195,28 @@ namespace Code.ObservableTest2
         {
             Debug.Log("Name Changed to " + s);
         }
+        private void GuardAlert(bool guarded)
+        {
+            Debug.Log("Guard Changed: " + guarded);
+        }
+        
+        private PlayerModel WriteToModel()
+        {
+            referenceModel.Health = Health;
+            referenceModel.Name = Name;
+            referenceModel.Guard = Guard;
+            return referenceModel;
+        }
 
         public override void Dispose()
         {
-            throw new NotImplementedException();
+            referenceModel = null;
+            Health.PropertyChanged -= HealthAlert;
+            Name.PropertyChanged -= NameAlert;
+            Guard.PropertyChanged -= GuardAlert;
+            Health = null;
+            Name = null;
+            Guard = null;
         }
     }
 

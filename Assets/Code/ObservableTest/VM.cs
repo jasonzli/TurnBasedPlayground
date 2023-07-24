@@ -9,6 +9,7 @@ using Random = System.Random;
 /*
  *
  * A lot of what is in here is from a mixture of Rider snippets and MicrosoftLearn and StackOverflow reading
+ * but Specifically big credit to this stack writeup: https://stackoverflow.com/questions/10324009/mvvm-modified-model-how-to-correctly-update-viewmodel-and-view
  * https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged?view=net-7.0
  * https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.propertychangedeventhandler?view=net-7.0
  * https://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface

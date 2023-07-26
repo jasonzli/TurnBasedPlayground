@@ -27,7 +27,7 @@ using Random = System.Random;
  * There remains a big question what "the model" is really meant to be in Unity's case.
  * </summary>
  */
-namespace Code.ObservableTest2
+namespace Code.ObservableTest
 {
     /// <summary>
     /// The Action only version of the INotifyPropertyChanged interface, which normally has a PropertyChangedEventHandler(object? sender, PropertyChangedEventArgs e)

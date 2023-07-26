@@ -9,7 +9,7 @@ namespace Code.ProtoVM
     /// Generically passes the value through, so you'll need to be aware of what you're expecting
     /// </summary>
     /// <typeparam name="T">Basic Data Types, this is a protoVM so dont' worry about advanced collections yet</typeparam>
-    public abstract class ObservableBase<T> : ObservableTest.ISimpleNotifyPropertyChanged
+    public abstract class ObservableBase<T> : ISimpleNotifyPropertyChanged
     {
         public Action<T> PropertyChanged;
         protected T _value;

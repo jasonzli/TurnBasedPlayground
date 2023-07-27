@@ -1,5 +1,8 @@
 namespace Code.BattleSystem
 {
+    /// <summary>
+    /// Essential data for BattleActors
+    /// </summary>
     public interface IBattleActor
     {
         public string Name { get; set; }

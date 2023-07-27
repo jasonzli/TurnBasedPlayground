@@ -5,9 +5,13 @@ using UnityEngine;
 
 namespace Code.ScriptableObjects
 {
+    /// <summary>
+    /// What an actor needs to be functional here
+    /// </summary>
     [CreateAssetMenu(fileName = "ActorData", menuName = "Create new Actor Data", order = 0)]
     public class ActorData : ScriptableObject
     {
+        public Sprite Icon;
         public string Name;
         public int Health;
         public bool UseURLBrain;

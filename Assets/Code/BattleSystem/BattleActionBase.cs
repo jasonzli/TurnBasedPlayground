@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Code.BattleSystem
 {
+    /// <summary>
+    /// Base class with esential battle functions
+    /// </summary>
     public abstract class BattleActionBase : IBattleAction
     {
         public BattleActionParameters Parameters { get; protected set; }
@@ -10,8 +13,9 @@ namespace Code.BattleSystem
         public IBattleActor Target { get; protected set; }
 
         //This bool type will come in handy later
-        public abstract Task<bool> Execute();
+        public abstract bool Execute();
         
+        // Some "essential" functions that should be consistent across any kind of battle action
         protected void ApplyHPDamage(IBattleActor target)
         {
             target.CurrentHP = Math.Max(0, target.CurrentHP - Parameters.hpDamage);

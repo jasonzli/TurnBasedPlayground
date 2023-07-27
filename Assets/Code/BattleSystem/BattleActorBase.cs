@@ -2,6 +2,10 @@ using Code.ScriptableObjects;
 
 namespace Code.BattleSystem
 {
+    /// <summary>
+    /// A base class for the battle actors. This is the data that the battle system will use to perform actions.
+    /// Extension is possible here, but it is not necessary for the scope of this project.
+    /// </summary>
     public abstract class BattleActorBase : IBattleActor
     {
         private string _name;

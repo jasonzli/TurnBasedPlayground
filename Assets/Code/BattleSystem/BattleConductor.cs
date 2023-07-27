@@ -1,17 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using Code.ScriptableObjects;
-using Code.Utility;
 using Code.ViewModels;
 using Code.ViewScripts;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 
 namespace Code.BattleSystem
 {
     /// <summary>
-    /// Quick and dirty conductor for the battle system.
+    /// This conductor serves as the gobetween and home for everything
+    /// It is the home to the model (the battle system)
+    /// It is the home to to UI references
+    /// And home to ViewModels
     /// </summary>
     public class BattleConductor : MonoBehaviour
     {

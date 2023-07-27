@@ -6,7 +6,12 @@ using Code.ScriptableObjects;
 
 namespace Code.BattleSystem
 {     
-    //This is a model
+    /// <summary>
+    /// This battle system tracks the actions of the battle and determines a winner.
+    /// How the battle unfolds visually is on the conductor
+    ///
+    /// As such, this is very straight forward. It has battle actors, and can execute actions on the battle.
+    /// </summary>
     public class BattleSystem
     {
         public IBattleActor PlayerOne { get; private set; }
@@ -32,6 +37,7 @@ namespace Code.BattleSystem
         {
             return new BattleActor(actorData.Name,actorData.Health, false);
         }
+        
         private IBattleActor EvaluateWinner()
         {
             if (PlayerOne.CurrentHP == 0)

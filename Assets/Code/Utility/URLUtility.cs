@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 namespace Code.Utility
 {
+    /// <summary>
+    /// Some URL utility functions
+    /// </summary>
     public static class URLUtility
     {
         public static async Task<string> FetchJSONStringFromURL(string url)

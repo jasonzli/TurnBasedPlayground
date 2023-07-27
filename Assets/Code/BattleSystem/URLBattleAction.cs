@@ -7,6 +7,11 @@ using UnityEngine.Networking;
 
 namespace Code.BattleSystem
 {
+    /// <summary>
+    /// A BattleAction that is created from a URL,
+    /// Not used, was originally intended to be used for a remote action, but replaced with the Conductor getting actions on behalf of the enemy
+    /// Because we need to know the action to trigger any other views to it
+    /// </summary>
     public class URLBattleAction : BattleActionBase
     {
         private string BrainURL { get; set; }
@@ -23,8 +28,13 @@ namespace Code.BattleSystem
             Source = null;
             Target = null;
         }
+
+        public override bool Execute()
+        {
+            return false;
+        }
         
-        public override async Task<bool> Execute()
+        public async Task<bool> Execute(bool dont)
         {
             string response = await URLUtility.FetchJSONStringFromURL(BrainURL);
 

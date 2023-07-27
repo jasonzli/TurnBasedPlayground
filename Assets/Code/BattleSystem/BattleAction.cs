@@ -26,7 +26,7 @@ namespace Code.BattleSystem
             Target = null;
         }
 
-        public override async Task<bool> Execute()
+        public override bool Execute()
         {
             //if Parameters deal damage, apply damage!
             if (Parameters.hpDamage > 0)

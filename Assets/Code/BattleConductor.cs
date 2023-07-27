@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace Code
 {
 
+    //THis is a model
     public class BattleSystem
     {
         public IPlayerActor Player { get; set; }
@@ -18,18 +19,13 @@ namespace Code
 
         public BattleSystem(ActorData playerData, ActorData enemyData)
         {
-            Player = new PlayerActor(playerData.Name,playerData.Health, false);
-            Enemy = new EnemyActor(enemyData.Name,enemyData.Health, false);
+            Player = new PlayerActor(playerData.Name,playerData.Health, Random.value > .5f);
+            Enemy = new EnemyActor(enemyData.Name,enemyData.Health, Random.value > .5f);
             
             //Create BattleActions from aforementioned parameters
             attackAction = new DamageAction(Player.AttackParameters, Player, Enemy);
             healAction = new HealAction(Player.HealParameters, Player, Player);
             guardAction = new GuardAction(Player.GuardParameters, Player, Player);
-        }
-        
-        void SetupBattle()
-        {
-        
         }
 
         public void QueueAction(IBattleAction action)
@@ -64,11 +60,19 @@ namespace Code
         IBattleAction healAction;
         IBattleAction guardAction;
         
-        
+        [SerializeField] BattleActorUIView _playerPanel;
+        [SerializeField] BattleActorUIView _enemyPanel;
+        private PlayerPanelViewModel playerOnePanelViewModel;
+        private PlayerPanelViewModel playerTwoPanelViewModel;
         void Start()
         {
             _battleSystem = new BattleSystem(_playerData,_enemyData);
 
+            playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.Player,true);
+            playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.Enemy,false);
+            _playerPanel.Initialize(playerOnePanelViewModel);
+            _enemyPanel.Initialize(playerTwoPanelViewModel);
+            
             attackAction = _battleSystem.attackAction;
             healAction = _battleSystem.healAction;
             guardAction = _battleSystem.guardAction;
@@ -93,6 +97,7 @@ namespace Code
         void PlayerGuard()
         {
             _battleSystem.QueueAction(guardAction);
+            playerOnePanelViewModel.UpdateFromBattleActor(_battleSystem.Player);
             StartCoroutine(FetchResult(_enemyData.URL));
         }
 
@@ -125,6 +130,18 @@ namespace Code
             }
             DamageAction enemyAttack = new DamageAction(data, _battleSystem.Enemy, _battleSystem.Player);
             _battleSystem.QueueAction(enemyAttack);
+            if (_battleSystem.Player.Guarded)
+            {
+                _battleSystem.Player.Guarded = false;
+            }
+
+            if (_battleSystem.Enemy.Guarded)
+            {
+                _battleSystem.Enemy.Guarded = false;
+            }
+
+            playerOnePanelViewModel.UpdateFromBattleActor(_battleSystem.Player);
+            playerTwoPanelViewModel.UpdateFromBattleActor(_battleSystem.Enemy);
         }
     }
 

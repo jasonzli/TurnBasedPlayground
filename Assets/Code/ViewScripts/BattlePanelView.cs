@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Code
+namespace Code.ViewScripts
 {
     public interface IView
     {

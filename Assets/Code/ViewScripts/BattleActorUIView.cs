@@ -1,5 +1,7 @@
+using Code.ViewModels;
 using UnityEngine;
-namespace Code
+
+namespace Code.ViewScripts
 {
     [RequireComponent(typeof(Animator))]
     public class BattleActorUIView : MonoBehaviour, IView

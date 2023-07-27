@@ -1,7 +1,7 @@
 using Code.BattleSystem;
 using Code.ProtoVM;
 
-namespace Code
+namespace Code.ViewModels
 {
     public class PlayerPanelViewModel
     {

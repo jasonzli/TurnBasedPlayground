@@ -22,17 +22,16 @@ namespace Code.ViewScripts
         [SerializeField] private RectTransform _MiddleContainer;
         [SerializeField] private RectTransform _LowerContainer;
         [SerializeField] private RectTransform _GuardContainer;
-        [SerializeField] private RectTransform _LowerHealthContainer;
-        [SerializeField] private RectTransform _MiddleHealthContainer;
         [SerializeField] private RectTransform _P1TokenContainer;
         [SerializeField] private RectTransform _P2TokenContainer;
+        [SerializeField] private RectTransform _HealthContainer;
+        [SerializeField] private HealthBarUpdater _healthBarUpdater;
+        
     
         //values to actually update
         [SerializeField] private TMPro.TextMeshProUGUI _nameText;
-        [SerializeField] private TMPro.TextMeshProUGUI _middleHPText;
-        [SerializeField] private TMPro.TextMeshProUGUI _lowerHPText;
+        [SerializeField] private TMPro.TextMeshProUGUI _healthText;
 
-        private TMPro.TextMeshProUGUI _currentHPTextHolder;
         private Animator _animator;
 
         public void Initialize(PlayerPanelViewModel viewModelContext)
@@ -48,7 +47,7 @@ namespace Code.ViewScripts
             DeterminePanelUIState(IsGuarding);
             SetUpUIPanelBasedOnStatus();
         
-        
+            UpdateCurrentHP(CurrentHP);
             viewModelContext.CurrentHP.PropertyChanged += UpdateCurrentHP;
             viewModelContext.IsGuarding.PropertyChanged += UpdatePlayerUIStatus;
 
@@ -94,31 +93,26 @@ namespace Code.ViewScripts
                 case(PanelUIState.GUARDING):
                     _TopContainer.gameObject.SetActive(true);
                     _MiddleContainer.gameObject.SetActive(true);
-                    _MiddleHealthContainer.gameObject.SetActive(true);
+                    _HealthContainer.SetParent(_MiddleContainer);
                     _LowerContainer.gameObject.SetActive(true);
-                    _LowerHealthContainer.gameObject.SetActive(false);
                     _GuardContainer.gameObject.SetActive(true);
-                    _currentHPTextHolder = _middleHPText;
                     break;
                 
                 //Two Panel View
                 case(PanelUIState.STANDARD):
                     _TopContainer.gameObject.SetActive(true);
                     _MiddleContainer.gameObject.SetActive(false);
-                    _MiddleHealthContainer.gameObject.SetActive(false);
+                    _HealthContainer.SetParent(_LowerContainer);
                     _LowerContainer.gameObject.SetActive(true);
-                    _LowerHealthContainer.gameObject.SetActive(true);
                     _GuardContainer.gameObject.SetActive(false);
-                    _currentHPTextHolder = _lowerHPText;
                     break;
             }
-        
-            _currentHPTextHolder.text = $"{CurrentHP} / {MaxHP}";
         }
         public void UpdateCurrentHP(int hp)
         {
             CurrentHP = hp;
-            _currentHPTextHolder.text = $"{CurrentHP} / {MaxHP}";
+            _healthText.text = $"{CurrentHP} / {MaxHP}";
+            _healthBarUpdater.UpdateHealthBarFill( (float) CurrentHP/MaxHP);
         }
 
         public void Show()

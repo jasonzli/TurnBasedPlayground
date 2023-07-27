@@ -8,31 +8,13 @@ namespace Code
         public void Hide();
     }
 
-
     public abstract class ViewBase : MonoBehaviour, IView
     {
-        private Animator _animator;
-        private static readonly int ShowCode = Animator.StringToHash("Show");
-        private static readonly int HideCode = Animator.StringToHash("Hide");
-
-        private void OnEnable()
-        {
-            _animator = GetComponent<Animator>();
-        }
-    
-    
-        public void Show()
-        {
-            _animator.ResetTrigger(HideCode);
-            _animator.SetTrigger(ShowCode);
-        }
-
-        public void Hide()
-        {
-            _animator.ResetTrigger(ShowCode);
-            _animator.SetTrigger(HideCode);
-        }
+        protected Animator _animator;
+        public abstract void Show();
+        public abstract void Hide();
     }
+    
     [RequireComponent(typeof(Animator))]
     public class BattlePanelView : ViewBase
     {
@@ -40,8 +22,6 @@ namespace Code
         [SerializeField] private RectTransform _player1Stub;
         [SerializeField] private RectTransform _player2Stub;
         [SerializeField] private RectTransform _centerStub;
-    
-        private Animator _animator;
 
         private void Initialize()
         {
@@ -55,13 +35,13 @@ namespace Code
             _animator = GetComponent<Animator>();
         }
     
-        public void Show()
+        public override void Show()
         {
             _animator.ResetTrigger("Hide");
             _animator.SetTrigger("Show");
         }
     
-        public void Hide()
+        public override void Hide()
         {
             _animator.ResetTrigger("Show");
             _animator.SetTrigger("Hide");

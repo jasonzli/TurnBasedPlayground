@@ -115,7 +115,6 @@ namespace Code
         }
         public void UpdateCurrentHP(int hp)
         {
-            Debug.Log("Updating HP");
             CurrentHP = hp;
             _currentHPTextHolder.text = $"{CurrentHP} / {MaxHP}";
         }

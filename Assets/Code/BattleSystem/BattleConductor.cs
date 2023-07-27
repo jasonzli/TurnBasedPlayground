@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using Code.ScriptableObjects;
+using Code.Utility;
 using Code.ViewModels;
 using Code.ViewScripts;
 using UnityEngine;
@@ -18,39 +20,43 @@ namespace Code.BattleSystem
         [SerializeField] private ActorData _enemyData;
 
         //Buttons and panels to display
-        [SerializeField] private Button _attackButton;
-        [SerializeField] private Button _healButton;
-        [SerializeField] private Button _guardButton;
         [SerializeField] BattleActorUIView _playerPanel;
         [SerializeField] BattleActorUIView _enemyPanel;
+        [SerializeField] BattleActionSelectionPanelView _playerBattleActionSelectionPanelView;
         
         //Internal data for the system and actions
         private BattleSystem _battleSystem;
-        private IBattleAction _playerAttackAction;
-        private IBattleAction _playerHealAction;
-        private IBattleAction _playerGuardAction;
-        private PlayerPanelViewModel playerOnePanelViewModel;
-        private PlayerPanelViewModel playerTwoPanelViewModel;
+        private PlayerPanelViewModel _playerOnePanelViewModel;
+        private PlayerPanelViewModel _playerTwoPanelViewModel;
+        private BattleActionSelectionViewModel _playerBattleActionViewModel;
         
         void Start()
         {
             _battleSystem = new BattleSystem(_playerData,_enemyData);
 
-            playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne,true);
-            playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo,false);
+            _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne,true);
+            _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo,false);
             
-            _playerPanel.Initialize(playerOnePanelViewModel);
-            _enemyPanel.Initialize(playerTwoPanelViewModel);
+            _playerPanel.Initialize(_playerOnePanelViewModel);
+            _enemyPanel.Initialize(_playerTwoPanelViewModel);
             
-            _playerAttackAction = new PlayerBattleAction(_playerData.AttackActionData.AsParameters(), _battleSystem.PlayerOne, _battleSystem.PlayerTwo);
-            _playerHealAction = new PlayerBattleAction(_playerData.HealActionData.AsParameters(), _battleSystem.PlayerOne, _battleSystem.PlayerOne);
-            _playerGuardAction = new PlayerBattleAction(_playerData.GuardActionData.AsParameters(), _battleSystem.PlayerOne, _battleSystem.PlayerOne);
+            List<BattleActionData> playerOneActions = new List<BattleActionData>(){_playerData.AttackActionData,_playerData.HealActionData,_playerData.GuardActionData};
             
-            _attackButton.onClick.AddListener(PlayerAttack);
-            _healButton.onClick.AddListener(PlayerHeal);
-            _guardButton.onClick.AddListener(PlayerGuard);
+            _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions,_battleSystem.PlayerOne,_battleSystem.PlayerTwo);
+            _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
+            _playerBattleActionViewModel.OnActionSelected += (action) =>
+            {
+                _battleSystem.PerformAction(action);
+                UpdateViewModels();
+            };
             
             _battleSystem.BattleOver += OnBattleOver;
+        }
+
+        private void UpdateViewModels()
+        {
+            _playerOnePanelViewModel.UpdateFromBattleActor();
+            _playerTwoPanelViewModel.UpdateFromBattleActor();
         }
         
         private void OnBattleOver(IBattleActor winner)
@@ -58,23 +64,6 @@ namespace Code.BattleSystem
             Debug.Log($"Battle Over! {winner.Name} has won!");
         }
         
-        private void PlayerAttack()
-        {
-            _battleSystem.PerformAction(_playerAttackAction);
-            playerTwoPanelViewModel.UpdateFromBattleActor(_battleSystem.PlayerTwo);
-        }
-
-        private void PlayerHeal()
-        {
-            _battleSystem.PerformAction(_playerHealAction);
-            playerTwoPanelViewModel.UpdateFromBattleActor(_battleSystem.PlayerTwo);
-        }
-
-        private void PlayerGuard()
-        {
-            _battleSystem.PerformAction(_playerGuardAction);
-            playerTwoPanelViewModel.UpdateFromBattleActor(_battleSystem.PlayerTwo);
-        }
     }
     
 }

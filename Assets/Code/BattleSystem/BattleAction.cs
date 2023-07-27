@@ -9,17 +9,17 @@ namespace Code.BattleSystem
     ///
     /// Visual display is left up to another layet
     /// /// </summary>
-    public class PlayerBattleAction : BattleActionBase
+    public class BattleAction : BattleActionBase
     {
 
-        public PlayerBattleAction(BattleActionParameters parameters, IBattleActor source, IBattleActor target)
+        public BattleAction(BattleActionParameters parameters, IBattleActor source, IBattleActor target)
         {
             Parameters = parameters;
             Source = source;
             Target = target;
         }
 
-        public PlayerBattleAction()
+        public BattleAction()
         {
             BattleActionParameters parameters = new BattleActionParameters();
             Source = null;

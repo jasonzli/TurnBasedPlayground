@@ -17,3 +17,4 @@ MonoBehaviour:
   HPDamage: 10
   HealAmount: 0
   DoesApplyGuard: 0
+  Icon: {fileID: 2800000, guid: 11a31e4ad04404286afb644a4f905e92, type: 3}

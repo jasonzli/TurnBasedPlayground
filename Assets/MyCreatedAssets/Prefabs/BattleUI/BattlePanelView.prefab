@@ -314,6 +314,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5868830334391732939}
     m_Modifications:
+    - target: {fileID: 4944287629125739838, guid: 4f5352a0aba0847ac9dacaa5128f6ebd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4958131232954426425, guid: 4f5352a0aba0847ac9dacaa5128f6ebd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

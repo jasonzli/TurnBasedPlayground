@@ -43,13 +43,16 @@ namespace Code.BattleSystem
             
             _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions,_battleSystem.PlayerOne,_battleSystem.PlayerTwo);
             _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
-            _playerBattleActionViewModel.OnActionSelected += (action) =>
-            {
-                _battleSystem.PerformAction(action);
-                UpdateViewModels();
-            };
             
+            
+            _playerBattleActionViewModel.OnActionSelected += SendAction;
             _battleSystem.BattleOver += OnBattleOver;
+        }
+
+        private void SendAction(IBattleAction action)
+        {
+            _battleSystem.PerformAction(action);
+            UpdateViewModels();
         }
 
         private void UpdateViewModels()

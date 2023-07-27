@@ -1,10 +1,11 @@
 using Code.BattleSystem;
 using Code.ProtoVM;
 
-namespace Code
+namespace Code.ViewModels
 {
     public class PlayerPanelViewModel
     {
+        private IBattleActor _actorContext;
         public Observable<int> CurrentHP = new Observable<int>();
         public Observable<int> MaxHP = new Observable<int>();
         public Observable<bool> IsGuarding = new Observable<bool>();
@@ -13,7 +14,8 @@ namespace Code
 
         public PlayerPanelViewModel(IBattleActor actorContext, bool isP1Side)
         {
-            SetupFromBattleActor(actorContext, isP1Side);
+            _actorContext = actorContext;
+            SetupFromBattleActor(_actorContext, isP1Side);
         }
 
         public void SetupFromBattleActor(IBattleActor actor, bool isP1Side)
@@ -25,10 +27,10 @@ namespace Code
             IsP1Side.Value = isP1Side;
         }
 
-        public void UpdateFromBattleActor(IBattleActor actor)
+        public void UpdateFromBattleActor()
         {
-            CurrentHP.Value = actor.CurrentHP;
-            IsGuarding.Value = actor.Guarded;
+            CurrentHP.Value = _actorContext.CurrentHP;
+            IsGuarding.Value = _actorContext.Guarded;
         }
     }
 }

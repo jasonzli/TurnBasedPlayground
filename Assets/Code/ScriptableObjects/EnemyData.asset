@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23722f2f95a742c099df24884e41634d, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 5a5be9b242b594e1cb2aedfdd8c4ebb2, type: 3}
   Name: Prowler
   Health: 25
   UseURLBrain: 1
   URL: https://fablemon.riftweaver.io/v1/fablemon
+  AttackActionData: {fileID: 0}
+  HealActionData: {fileID: 0}
+  GuardActionData: {fileID: 0}

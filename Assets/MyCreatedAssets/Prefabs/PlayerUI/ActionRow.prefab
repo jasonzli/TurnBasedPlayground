@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4710231472951908127}
   - component: {fileID: 4710231472951907552}
   - component: {fileID: 4710231472951907553}
+  - component: {fileID: 1268772201385262312}
   m_Layer: 5
   m_Name: ActionRow
   m_TagString: Untagged
@@ -124,6 +125,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1268772201385262312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710231472951907554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ad9b2ee3fdf4bb9b640b7bf702e830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionButtonObject: {fileID: 8901751654900697102}
+  iconContainer: {fileID: 4710231473570224343}
+  ActionNameText: {fileID: 4710231473584237638}
 --- !u!1 &4710231473470154631
 GameObject:
   m_ObjectHideFlags: 0

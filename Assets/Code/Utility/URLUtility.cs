@@ -1,10 +1,15 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Code.BattleSystem;
+using Code.ScriptableObjects;
 using Newtonsoft.Json;
 
-namespace Code
+namespace Code.Utility
 {
-    public static class URLFetch
+    /// <summary>
+    /// Some URL utility functions
+    /// </summary>
+    public static class URLUtility
     {
         public static async Task<string> FetchJSONStringFromURL(string url)
         {
@@ -26,5 +31,7 @@ namespace Code
             string jsonString = await FetchJSONStringFromURL(url);
             return JsonConvert.DeserializeObject<T>(jsonString);
         }
+        
     }
+    
 }

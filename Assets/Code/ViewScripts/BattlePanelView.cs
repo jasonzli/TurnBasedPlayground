@@ -1,21 +1,8 @@
 using UnityEngine;
 
-namespace Code
+namespace Code.ViewScripts
 {
-    public interface IView
-    {
-        public void Show();
-        public void Hide();
-    }
 
-    public abstract class ViewBase : MonoBehaviour, IView
-    {
-        protected Animator _animator;
-        public abstract void Show();
-        public abstract void Hide();
-    }
-    
-    [RequireComponent(typeof(Animator))]
     public class BattlePanelView : ViewBase
     {
         //Serialized fields for the player 1, player 2 and center stubs

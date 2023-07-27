@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23722f2f95a742c099df24884e41634d, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: bb04ff229f40f4fc6baf827c86f0f412, type: 3}
   Name: Player
   Health: 25
   UseURLBrain: 0
   URL: 
+  AttackActionData: {fileID: 11400000, guid: 114b9f3357e054b54b216e60ccb24ec8, type: 2}
+  HealActionData: {fileID: 11400000, guid: 43c86db3352474119a7e2471d78a3205, type: 2}
+  GuardActionData: {fileID: 11400000, guid: 6187746b43cb34e2fa4020cc31c268bf, type: 2}

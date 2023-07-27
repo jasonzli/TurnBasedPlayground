@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Code.ViewScripts
 {
     [RequireComponent(typeof(Animator))]
-    public class BattleActorUIView : MonoBehaviour, IView
+    public class BattleActorUIView : ViewBase
     {
         private enum PanelUIState
         {
@@ -31,8 +31,6 @@ namespace Code.ViewScripts
         //values to actually update
         [SerializeField] private TMPro.TextMeshProUGUI _nameText;
         [SerializeField] private TMPro.TextMeshProUGUI _healthText;
-
-        private Animator _animator;
 
         public void Initialize(PlayerPanelViewModel viewModelContext)
         {
@@ -115,14 +113,16 @@ namespace Code.ViewScripts
             _healthBarUpdater.UpdateHealthBarFill( (float) CurrentHP/MaxHP);
         }
 
-        public void Show()
+        public override void Show()
         {
+            gameObject.SetActive(true);
             _animator.ResetTrigger("Hide");
             _animator.SetTrigger("Show");
         }
 
-        public void Hide()
+        public override void Hide()
         {
+            gameObject.SetActive(false);
             _animator.ResetTrigger("Show");
             _animator.SetTrigger("Hide");
         }

@@ -19,6 +19,7 @@ namespace Code.BattleSystem
         [SerializeField] private ActorData _enemyData;
 
         //Buttons and panels to display
+        [SerializeField] BattleOverlayPanelUIView _battleOverlayPanelUIView;
         [SerializeField] BattleActorUIView _playerPanel;
         [SerializeField] BattleActorUIView _enemyPanel;
         [SerializeField] BattleActionSelectionPanelView _playerBattleActionSelectionPanelView;
@@ -28,27 +29,53 @@ namespace Code.BattleSystem
         private PlayerPanelViewModel _playerOnePanelViewModel;
         private PlayerPanelViewModel _playerTwoPanelViewModel;
         private BattleActionSelectionViewModel _playerBattleActionViewModel;
+        private BattleOverlayPanelViewModel _battleOverlayPanelViewModel;
         
         void Start()
+        {
+            ResetBattle();
+        }
+
+        [ContextMenu("Reset")]
+        void ResetBattle()
         {
             _battleSystem = new BattleSystem(_playerData,_enemyData);
 
             _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne,true);
             _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo,false);
-            
+            List<BattleActionData> playerOneActions = new List<BattleActionData>(){_playerData.AttackActionData,_playerData.HealActionData,_playerData.GuardActionData};
+            _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions,_battleSystem.PlayerOne,_battleSystem.PlayerTwo);
+            _battleOverlayPanelViewModel = new BattleOverlayPanelViewModel("Combat Begins", false, true, () =>
+            {
+                ResetBattle();
+            });
+           
             _playerPanel.Initialize(_playerOnePanelViewModel);
             _enemyPanel.Initialize(_playerTwoPanelViewModel);
-            
-            List<BattleActionData> playerOneActions = new List<BattleActionData>(){_playerData.AttackActionData,_playerData.HealActionData,_playerData.GuardActionData};
-            
-            _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions,_battleSystem.PlayerOne,_battleSystem.PlayerTwo);
             _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
+            _battleOverlayPanelUIView.Initialize(_battleOverlayPanelViewModel);
             
+            HideBattleActorUI();
             
             _playerBattleActionViewModel.OnActionSelected += SendAction;
+            _battleOverlayPanelViewModel.OnPanelHidden += ShowBattleActorUI;
             _battleSystem.BattleOver += OnBattleOver;
+            
         }
 
+        private void ShowBattleActorUI()
+        {
+            _playerPanel.Show();
+            _enemyPanel.Show();
+            _playerBattleActionSelectionPanelView.Show();
+        }
+
+        private void HideBattleActorUI()
+        {
+            _playerPanel.Hide();
+            _enemyPanel.Hide();
+            _playerBattleActionSelectionPanelView.Hide();
+        }
         private void SendAction(IBattleAction action)
         {
             _battleSystem.PerformAction(action);
@@ -64,8 +91,9 @@ namespace Code.BattleSystem
         private void OnBattleOver(IBattleActor winner)
         {
             Debug.Log($"Battle Over! {winner.Name} has won!");
+            ResetBattle();
         }
         
     }
-    
+
 }

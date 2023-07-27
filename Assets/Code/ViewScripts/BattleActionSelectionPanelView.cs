@@ -21,6 +21,12 @@ namespace Code.ViewScripts
         {
             _context = context;
             
+            //Clean up old action rows
+            foreach(GameObject row in _actionRows)
+            {
+                Destroy(row);
+            }
+            
             _animator = GetComponent<Animator>();
             _animator.ResetTrigger("Show");
             _animator.ResetTrigger("Hide");
@@ -38,12 +44,12 @@ namespace Code.ViewScripts
 
         public override void Show()
         {
-            throw new System.NotImplementedException();
+            gameObject.SetActive(true);
         }
 
         public override void Hide()
         {
-            throw new System.NotImplementedException();
+            gameObject.SetActive(false);
         }
     }
 }

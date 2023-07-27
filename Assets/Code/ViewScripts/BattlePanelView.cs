@@ -24,12 +24,16 @@ namespace Code.ViewScripts
     
         public override void Show()
         {
+            
+            gameObject.SetActive(true);
             _animator.ResetTrigger("Hide");
             _animator.SetTrigger("Show");
         }
     
         public override void Hide()
         {
+            
+            gameObject.SetActive(false);
             _animator.ResetTrigger("Show");
             _animator.SetTrigger("Hide");
         }

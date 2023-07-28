@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerAttackActionData
   m_EditorClassIdentifier: 
   ActionName: Attack
-  HPDamage: 16
+  HPDamage: 10
   HealAmount: 0
   DoesApplyGuard: 0
   Icon: {fileID: 21300000, guid: 11a31e4ad04404286afb644a4f905e92, type: 3}

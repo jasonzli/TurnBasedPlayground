@@ -21,6 +21,12 @@ namespace Code.BattleSystem
     {
         //Data to setup players
         [SerializeField] private ActorData _playerData;
+
+        public ActorData playerOneData
+        {
+            get { return _playerData; }
+        }
+
         [SerializeField] private ActorData _enemyData;
 
         //Buttons and panels to display
@@ -33,7 +39,7 @@ namespace Code.BattleSystem
         [SerializeField] private ActionPanelView _actionPanelView;
         [SerializeField] private ErrorPanelView _errorPanelView;
 
-        //Internal data for the system and actions
+        //ViewModels for the system and actions
         private BattleSystem _battleSystem;
         private PlayerPanelViewModel _playerOnePanelViewModel;
         private PlayerPanelViewModel _playerTwoPanelViewModel;
@@ -44,6 +50,7 @@ namespace Code.BattleSystem
         private ActionPanelViewModel _actionPanelViewModel;
         private ErrorPanelViewModel _errorPanelViewModel;
 
+        //Internal  data for battle
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
         private int turnIndex = 0;
 
@@ -53,7 +60,7 @@ namespace Code.BattleSystem
         }
 
         [ContextMenu("Reset")]
-        async Task ResetBattle()
+        public async Task ResetBattle()
         {
             _battleSystem = new BattleSystem(_playerData, _enemyData);
 
@@ -341,9 +348,6 @@ namespace Code.BattleSystem
         }
 
         #endregion
-
-
-        
 
     }
 }

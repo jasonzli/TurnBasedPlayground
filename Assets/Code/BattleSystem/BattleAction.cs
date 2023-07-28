@@ -22,6 +22,7 @@ namespace Code.BattleSystem
         public BattleAction()
         {
             BattleActionParameters parameters = new BattleActionParameters();
+            Parameters = parameters;
             Source = null;
             Target = null;
         }

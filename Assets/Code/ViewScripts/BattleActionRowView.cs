@@ -1,31 +1,32 @@
-
 using Code.ScriptableObjects;
-using Code.ViewScripts;
 using TMPro;
 using UnityEngine.UI;
 
-/// <summary>
-/// A dumb container for the UI objects of the row
-/// </summary>
-public class BattleActionRowView : ViewBase
+namespace Code.ViewScripts
 {
-    public Button ActionButtonObject;
-    public Image iconContainer;
-    public TextMeshProUGUI ActionNameText;
+    /// <summary>
+    /// A dumb container for the UI objects of the row
+    /// </summary>
+    public class BattleActionRowView : ViewBase
+    {
+        public Button ActionButtonObject;
+        public Image iconContainer;
+        public TextMeshProUGUI ActionNameText;
     
-    public void Initialize(BattleActionData actionData)
-    {
-        ActionNameText.text = actionData.ActionName.ToUpper();
-        iconContainer.sprite = actionData.Icon;
-    }
+        public void Initialize(BattleActionData actionData)
+        {
+            ActionNameText.text = actionData.ActionName.ToUpper();
+            iconContainer.sprite = actionData.Icon;
+        }
 
-    public override void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        public override void Show()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public override void Hide()
-    {
-        gameObject.SetActive(false);
+        public override void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

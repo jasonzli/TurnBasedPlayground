@@ -4,9 +4,8 @@ using Code.BattleSystem;
 using Code.ProtoVM;
 using Code.ScriptableObjects;
 using Code.Utility;
-using Code.ViewModels;
 
-namespace Code.ViewScripts
+namespace Code.ViewModels
 {
     /// <summary>
     /// A viewmodel for the selection panel

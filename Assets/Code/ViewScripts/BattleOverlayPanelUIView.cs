@@ -41,19 +41,6 @@ namespace Code.ViewScripts
             SetVisibility(context.Visibility);
         }
 
-        
-        private void SetVisibility(bool visibility)
-        {
-            if (visibility)
-            {
-                Show();
-            }
-            else
-            {
-                Hide();
-            }
-        }
-
         public void SetButtonActive(bool buttonActive)
         {
             _showButton = buttonActive;

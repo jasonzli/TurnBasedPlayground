@@ -56,20 +56,6 @@ namespace Code.ViewScripts
             SetVisibility(context.Visibility);
         }
         
-        
-        private void SetVisibility(bool visibility)
-        {
-            if (visibility)
-            {
-                Show();
-            }
-            else
-            {
-                Hide();
-            }
-        }
-
-
         private void SetupToken()
         {
             if (IsPlayerOne)

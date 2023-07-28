@@ -15,7 +15,7 @@ public class BattleActionRowView : ViewBase
     
     public void Initialize(BattleActionData actionData)
     {
-        ActionNameText.text = actionData.ActionName;
+        ActionNameText.text = actionData.ActionName.ToUpper();
         iconContainer.sprite = actionData.Icon;
     }
 

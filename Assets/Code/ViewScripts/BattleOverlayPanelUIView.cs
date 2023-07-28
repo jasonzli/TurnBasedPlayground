@@ -1,5 +1,4 @@
-using System.Collections;
-using Code.BattleSystem;
+
 using Code.ViewModels;
 using TMPro;
 using UnityEngine;

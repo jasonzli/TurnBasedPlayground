@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Code.BattleSystem;
-using Code.ProtoVM;
+
 using Code.ScriptableObjects;
 using UnityEngine;
 

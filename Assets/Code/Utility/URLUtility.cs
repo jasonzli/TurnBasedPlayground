@@ -1,8 +1,5 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Code.BattleSystem;
-using Code.ScriptableObjects;
-using Newtonsoft.Json;
 
 namespace Code.Utility
 {

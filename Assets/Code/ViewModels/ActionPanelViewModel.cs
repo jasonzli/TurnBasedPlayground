@@ -1,7 +1,5 @@
 using Code.BattleSystem;
 using Code.ProtoVM;
-using Unity.VisualScripting;
-using UnityEngine;
 
 namespace Code.ViewModels
 {

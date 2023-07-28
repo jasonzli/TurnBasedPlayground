@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Code.BattleSystem;
+
 using Code.ScriptableObjects;
 using Code.ViewScripts;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>

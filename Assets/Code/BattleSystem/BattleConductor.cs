@@ -64,12 +64,14 @@ namespace Code.BattleSystem
         {
             _battleSystem = new BattleSystem(_playerData, _enemyData);
 
-            _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, true);
-            _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, false);
+            _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, _playerData,true);
+            _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, _enemyData,false);
+            
             List<BattleActionData> playerOneActions = new List<BattleActionData>()
                 { _playerData.AttackActionData, _playerData.HealActionData, _playerData.GuardActionData };
             _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions, _battleSystem.PlayerOne,
                 _battleSystem.PlayerTwo);
+            
             _battleOverlayPanelViewModel = new BattleOverlayPanelViewModel("Combat Begins", false, true, () => { });
             _playerWinViewModel = new BattleOverlayPanelViewModel($"{_battleSystem.PlayerOne.Name} Wins!", true, false,
                 () => { ResetBattle(); });

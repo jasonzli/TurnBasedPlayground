@@ -1,5 +1,6 @@
 using Code.ViewModels;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Code.ViewScripts
 {
@@ -27,14 +28,19 @@ namespace Code.ViewScripts
         [SerializeField] private RectTransform _P2TokenContainer;
         [SerializeField] private RectTransform _HealthContainer;
         [SerializeField] private HealthBarUpdater _healthBarUpdater;
+        [SerializeField] private Image _P1ImageToken;
+        [SerializeField] private Image _P2ImageToken;
         
     
         //values to actually update
         [SerializeField] private TMPro.TextMeshProUGUI _nameText;
         [SerializeField] private TMPro.TextMeshProUGUI _healthText;
 
+        private PlayerPanelViewModel _context;
+
         public void Initialize(PlayerPanelViewModel context)
         {
+            _context = context;
             Name = context.Name;
             gameObject.SetActive(true);
             _nameText.text = Name.ToUpper();
@@ -61,10 +67,12 @@ namespace Code.ViewScripts
             if (IsPlayerOne)
             {
                 _P1TokenContainer.gameObject.SetActive(true);
+                _P1ImageToken.sprite = _context.ActorData.Icon;;
             }
             else
             {
                 _P2TokenContainer.gameObject.SetActive(true);
+                _P2ImageToken.sprite = _context.ActorData.Icon;;
             }
         }
 

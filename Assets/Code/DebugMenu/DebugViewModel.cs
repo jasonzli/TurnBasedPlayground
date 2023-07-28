@@ -50,8 +50,16 @@ namespace Code.DebugMenu
             actorToManipulate.Icon = actorData.Icon;
         }
 
-        public void TriggerReset()
+        private void UpdateActorWithCurrentData()
         {
+            actorToManipulate.Health = HealthValue;
+            actorToManipulate.HealActionData.HealAmount = HealPower;
+            actorToManipulate.AttackActionData.HPDamage = AttackPower;
+        }
+
+        public void TriggerResetWithData()
+        {
+            UpdateActorWithCurrentData();
             ResetFunction?.Invoke();
         }
     

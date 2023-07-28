@@ -1,5 +1,6 @@
 using Code.BattleSystem;
 using Code.ProtoVM;
+using Code.ScriptableObjects;
 
 namespace Code.ViewModels
 {
@@ -15,20 +16,25 @@ namespace Code.ViewModels
         public Observable<string> Name = new Observable<string>();
         public Observable<bool> IsP1Side = new Observable<bool>();
         public Observable<bool> Visibility = new Observable<bool>();
+        
+        
+        public ActorData ActorData; //I really don't like this but it's how we'll pass the data along for now
 
-        public PlayerPanelViewModel(IBattleActor actorContext, bool isP1Side)
+        public PlayerPanelViewModel(IBattleActor actorContext, ActorData actorData, bool isP1Side)
         {
             _actorContext = actorContext;
-            SetupFromBattleActor(_actorContext, isP1Side);
+            ActorData = actorData;
+            SetupFromBattleActor(_actorContext, actorData, isP1Side);
         }
 
-        public void SetupFromBattleActor(IBattleActor actor, bool isP1Side)
+        public void SetupFromBattleActor(IBattleActor actor, ActorData actorData,bool isP1Side)
         {
             CurrentHP.Value = actor.CurrentHP;
             MaxHP.Value = actor.MaxHP;
             IsGuarding.Value = actor.Guarded;
             Name.Value = actor.Name;
             IsP1Side.Value = isP1Side;
+            ActorData = actorData;
         }
 
         public void UpdateFromBattleActor()

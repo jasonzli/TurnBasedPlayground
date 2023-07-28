@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using Code.ScriptableObjects;
+using Code.ViewModels;
 using UnityEngine;
 
 namespace Code.ViewScripts

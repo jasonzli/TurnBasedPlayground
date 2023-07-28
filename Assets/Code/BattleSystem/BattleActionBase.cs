@@ -18,6 +18,12 @@ namespace Code.BattleSystem
         // Some "essential" functions that should be consistent across any kind of battle action
         protected void ApplyHPDamage(IBattleActor target)
         {
+            //If they're guarded remove their guard and leave it at that
+            if (target.Guarded)
+            {
+                target.Guarded = false;
+                return;
+            }
             target.CurrentHP = Math.Max(0, target.CurrentHP - Parameters.hpDamage);
         }
         

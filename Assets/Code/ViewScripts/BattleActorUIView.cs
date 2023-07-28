@@ -32,27 +32,43 @@ namespace Code.ViewScripts
         [SerializeField] private TMPro.TextMeshProUGUI _nameText;
         [SerializeField] private TMPro.TextMeshProUGUI _healthText;
 
-        public void Initialize(PlayerPanelViewModel viewModelContext)
+        public void Initialize(PlayerPanelViewModel context)
         {
-            Name = viewModelContext.Name;
+            Name = context.Name;
             _nameText.text = Name.ToUpper();
-            CurrentHP = viewModelContext.CurrentHP;
-            MaxHP = viewModelContext.MaxHP;
-            IsGuarding = viewModelContext.IsGuarding;
-            IsPlayerOne = viewModelContext.IsP1Side;
+            CurrentHP = context.CurrentHP;
+            MaxHP = context.MaxHP;
+            IsGuarding = context.IsGuarding;
+            IsPlayerOne = context.IsP1Side;
 
             SetupToken();
             DeterminePanelUIState(IsGuarding);
             SetUpUIPanelBasedOnStatus();
         
             UpdateCurrentHP(CurrentHP);
-            viewModelContext.CurrentHP.PropertyChanged += UpdateCurrentHP;
-            viewModelContext.IsGuarding.PropertyChanged += UpdatePlayerUIStatus;
-
+            context.CurrentHP.PropertyChanged += UpdateCurrentHP;
+            context.IsGuarding.PropertyChanged += UpdatePlayerUIStatus;
+            context.Visibility.PropertyChanged += SetVisibility;
+            
             _animator.ResetTrigger("Show");
             _animator.ResetTrigger("Hide");
-            Show();
+            
+            SetVisibility(context.Visibility);
         }
+        
+        
+        private void SetVisibility(bool visibility)
+        {
+            if (visibility)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
+        }
+
 
         private void SetupToken()
         {

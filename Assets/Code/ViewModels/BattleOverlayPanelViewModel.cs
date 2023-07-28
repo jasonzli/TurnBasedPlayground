@@ -3,24 +3,30 @@ using Code.ProtoVM;
 
 namespace Code.ViewModels
 {
-    public class BattleOverlayPanelViewModel
+    /// <summary>
+    /// The overlay viewmodel
+    ///
+    /// This is more complex than it needed to be in this prototype. There was an intention to have it be *one* object
+    /// that is updated as needed, but the way the prototype shook out, it was easier to just have 3 of them.
+    /// </summary>
+    public class BattleOverlayPanelViewModel : IViewModel
     {
         
         public Observable<string> HeaderText = new Observable<string>();
         public Observable<bool> ShowButton = new Observable<bool>();
-        public Observable<bool> IsVisible = new Observable<bool>();
+        public Observable<bool> Visibility = new Observable<bool>();
         public Action PlayAgainButtonAction;
-        public Action OnPanelHidden;
+        
         
         public BattleOverlayPanelViewModel(
             string headerText,
             bool showButton, 
-            bool isVisible, 
+            bool visibility, 
             Action playAgainButtonAction)
         {
             HeaderText.Value = headerText;
             ShowButton.Value = showButton;
-            IsVisible.Value = isVisible;
+            Visibility.Value = visibility;
             PlayAgainButtonAction = playAgainButtonAction;
         }
 
@@ -33,6 +39,11 @@ namespace Code.ViewModels
         public void OnPlayButtonClicked()
         {
             PlayAgainButtonAction();
+        }
+
+        public void SetVisibility(bool visibility)
+        {
+            Visibility.Value = visibility;
         }
     }
 }

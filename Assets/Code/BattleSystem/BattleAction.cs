@@ -7,7 +7,7 @@ namespace Code.BattleSystem
     /// BattleActions are created from parameters and executed on a target from a source
     /// They are fully constructed from BattleActionParameters, and apply all values from those parameters
     ///
-    /// Visual display is left up to another layet
+    /// Visual display is left up to another layer
     /// /// </summary>
     public class BattleAction : BattleActionBase
     {
@@ -37,15 +37,20 @@ namespace Code.BattleSystem
             //If Parameters heal, apply health!
             if (Parameters.healAmount > 0)
             {
-                ApplyHeal(Target);
+                ApplyHeal(Source);
             }
 
             //If parameters guard, apply guard!
             if (Parameters.doesApplyGuard)
             {
-                ApplyGuard(Target);
+                ApplyGuard(Source);
             }
 
+            //if target is still guarded, remove the guard
+            if (Target.Guarded)
+            {
+                Target.Guarded = false;
+            }
             return true;
         }
         

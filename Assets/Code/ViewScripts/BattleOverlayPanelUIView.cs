@@ -36,8 +36,16 @@ namespace Code.ViewScripts
             
             context.HeaderText.PropertyChanged += SetText;
             context.ShowButton.PropertyChanged += SetButtonActive;
+            context.Visibility.PropertyChanged += SetVisibility;
 
-            if (_context.IsVisible)
+            SetText(context.HeaderText);
+            SetVisibility(context.Visibility);
+        }
+
+        
+        private void SetVisibility(bool visibility)
+        {
+            if (visibility)
             {
                 Show();
             }
@@ -45,26 +53,6 @@ namespace Code.ViewScripts
             {
                 Hide();
             }
-
-            StartCoroutine(AutoHide());
-        }
-
-        private void UpdateColor()
-        {
-            
-        }
-
-        private IEnumerator AutoHide()
-        {
-            float t = 0;
-            while (t < 2f)
-            {
-                t+= Time.deltaTime;
-                yield return null;
-            }
-
-            Hide();
-            _context.OnPanelHidden?.Invoke();
         }
 
         public void SetButtonActive(bool buttonActive)

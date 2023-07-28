@@ -3,6 +3,9 @@ using Code.ScriptableObjects;
 
 namespace Code.Utility
 {
+    /// <summary>
+    /// Extensions for the battleactionparameters struct
+    /// </summary>
     public static class BattleActionDataExtensions
     {
         public static BattleAction AsBattleAction(this BattleActionData data, IBattleActor source, IBattleActor target)
@@ -15,6 +18,7 @@ namespace Code.Utility
         
             return new BattleActionParameters()
             {
+                MoveName = data.ActionName,
                 hpDamage = data.HPDamage,
                 healAmount = data.HealAmount,
                 doesApplyGuard = data.DoesApplyGuard,

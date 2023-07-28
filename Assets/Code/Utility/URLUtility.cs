@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Code.Utility
 {
     /// <summary>
-    /// Some URL utility functions
+    /// Some URL utility functions for JSON
     /// </summary>
     public static class URLUtility
     {
@@ -15,8 +15,16 @@ namespace Code.Utility
         {
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                
+                HttpResponseMessage response;
+                try
+                {
+                    response = await client.GetAsync(url);
+                }
+                catch
+                {
+                    return null;
+                }
+
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
@@ -25,13 +33,6 @@ namespace Code.Utility
                 return await response.Content.ReadAsStringAsync();
             }
         }
-
-        public static async Task<T> FetchJSONFromURL<T>(string url)
-        {
-            string jsonString = await FetchJSONStringFromURL(url);
-            return JsonConvert.DeserializeObject<T>(jsonString);
-        }
-        
     }
     
 }

@@ -9,71 +9,52 @@ namespace Code.BattleSystem
 {
     /// <summary>
     /// A BattleAction that is created from a URL,
-    /// Not used, was originally intended to be used for a remote action, but replaced with the Conductor getting actions on behalf of the enemy
-    /// Because we need to know the action to trigger any other views to it
+    /// Was originally intended to be used for a remote action, but replaced with the Conductor getting actions on behalf of the enemy
+    /// Because we need to know the action to update any viewmodels with its data to it
     /// </summary>
     public class URLBattleAction : BattleActionBase
     {
-        private string BrainURL { get; set; }
-        public URLBattleAction(string url, IBattleActor source, IBattleActor target)
+        public URLBattleAction(BattleActionParameters parameters, IBattleActor source, IBattleActor target)
         {
-            BrainURL = url;
+            Parameters = parameters;
             Source = source;
             Target = target;
         }
 
         public URLBattleAction()
         {
-            BrainURL = null;
+            Parameters = new BattleActionParameters();
             Source = null;
             Target = null;
         }
 
         public override bool Execute()
         {
-            return false;
-        }
-        
-        public async Task<bool> Execute(bool dont)
-        {
-            string response = await URLUtility.FetchJSONStringFromURL(BrainURL);
-
-            BattleActionParameters battleActionData;
-            if (response == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                battleActionData = JsonUtility.FromJson<BattleActionParameters>(response);
-            }
-            catch(Exception e)
-            {
-                Debug.Log(e.Message);
-                return false;
-            }
-
-            //Data is valid and good. Now we can execute the action
+            //Apply parameters intelligently
             
             //if Parameters deal damage, apply damage!
-            if (battleActionData.hpDamage > 0)
+            if (Parameters.hpDamage > 0)
             {
                 ApplyHPDamage(Target);
             }
 
             //If battleActionData heal, apply health!
-            if (battleActionData.healAmount > 0)
+            if (Parameters.healAmount > 0)
             {
                 ApplyHeal(Source);
             }
 
             //If parameters guard, apply guard!
-            if (battleActionData.doesApplyGuard)
+            if (Parameters.doesApplyGuard)
             {
                 ApplyGuard(Source);
             }
 
+            //If the target is still guarded at this time, remove the guard
+            if (Target.Guarded)
+            {
+                Target.Guarded = false;
+            }
             return true;
         }
         

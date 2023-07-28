@@ -1,7 +1,11 @@
+using System;
+
 namespace Code.BattleSystem
-{   /// <summary>
+{   
+    /// <summary>
     /// Represents a single action in a battle.
     /// </summary>
+    [Serializable]
     public struct BattleActionParameters
     {
         public string moveName;

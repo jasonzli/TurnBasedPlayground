@@ -38,15 +38,15 @@ namespace Code.BattleSystem
             return new BattleActor(actorData.Name,actorData.Health, false);
         }
         
-        private IBattleActor EvaluateWinner()
+        public IBattleActor EvaluateWinner()
         {
-            if (PlayerOne.CurrentHP == 0)
+            if (PlayerOne.CurrentHP <= 0)
             {
                 BattleOver?.Invoke(PlayerTwo);
                 return PlayerTwo;
             }
 
-            if (PlayerTwo.CurrentHP == 0)
+            if (PlayerTwo.CurrentHP <= 0)
             {
                 BattleOver?.Invoke(PlayerOne);
                 return PlayerOne;

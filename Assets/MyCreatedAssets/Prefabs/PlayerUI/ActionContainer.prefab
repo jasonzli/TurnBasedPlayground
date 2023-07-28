@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6215578128988431359}
   - component: {fileID: 6274136533918563935}
   - component: {fileID: 4454370064871549569}
+  - component: {fileID: 2485550913717545052}
   m_Layer: 5
   m_Name: ActionContainer
   m_TagString: Untagged
@@ -132,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4580117ac93044628ebdaf728c268111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 4454370064871549569}
   _actionRowPrefab: {fileID: 4710231472951907554, guid: 4ed0d4ff11b7c4db597ad6cae9f827e5, type: 3}
   _actionContainer: {fileID: 6215578128988431299}
 --- !u!95 &4454370064871549569
@@ -144,7 +146,7 @@ Animator:
   m_GameObject: {fileID: 6215578128988431298}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5a4921bca084044a3b0ce209f55394bb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -154,3 +156,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &2485550913717545052
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6215578128988431298}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 448, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4834936663182640116
 CanvasRenderer:
@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9d296441d0d4b0392ba3351af6168e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 4156838180637391434}
   _TopContainer: {fileID: 2446139671468504238}
   _MiddleContainer: {fileID: 900214664945960472}
   _LowerContainer: {fileID: 6378113788880943888}
@@ -214,7 +215,7 @@ Animator:
   m_GameObject: {fileID: 5287085489515914716}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 91d13914c83ea425a9fe721097f036c3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2f6204e6764f44732996474ea3121969, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -383,8 +384,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 224, y: 0}
+  m_SizeDelta: {x: 448, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &226781723048274379
 CanvasRenderer:
@@ -1039,7 +1040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6153186441295107793, guid: 45c4a0d540a06474888744e9ec4c1a00, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 448
       objectReference: {fileID: 0}
     - target: {fileID: 6153186441295107793, guid: 45c4a0d540a06474888744e9ec4c1a00, type: 3}
       propertyPath: m_SizeDelta.y

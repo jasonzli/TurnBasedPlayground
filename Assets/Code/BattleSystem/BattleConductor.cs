@@ -110,27 +110,28 @@ namespace Code.BattleSystem
         {
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
-
             await Task.Delay(1500);
-
             HideActionPanel(); //hide the action panel;
+            
             _battleSystem.PerformAction(action);
             UpdatePlayerViewModels();
 
             //Increment turn
             turnIndex = (turnIndex + 1) % _turnOrder.Count;
 
-            //visual task delay to see victory condition
-            await Task.Delay(250);
-            
             //check for winner
             IBattleActor winner = _battleSystem.EvaluateWinner();
             if (winner != null)
             {
+                //visual task delay to see victory condition
+                await Task.Delay(1400);
+
                 BattleOver(winner);
                 return;
             }
-
+            
+            await Task.Delay(200);
+            
             //This is the hacky way we're gonna do this
             //Enemy turn
             if (_turnOrder[turnIndex] == _battleSystem.PlayerTwo)
@@ -156,7 +157,7 @@ namespace Code.BattleSystem
         {
             HideAllUI();
             //show the standard UI, minus the battle actions
-            ShowBattleActorUI();
+            ShowBattleActorDataPanels();
             
             IBattleAction urlAction = await FetchAction();
             if (urlAction == null)
@@ -192,7 +193,6 @@ namespace Code.BattleSystem
             }
 
             //Battle Action data is good,create battle Action
-            
             URLBattleAction urlAction =
                 new URLBattleAction(battleActionData, _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
 
@@ -221,6 +221,23 @@ namespace Code.BattleSystem
 
 
         #region UI State Control
+
+        private async Task ShowBeginningOverlay()
+        {
+            HideAllUI();
+            _battleOverlayPanelViewModel.SetVisibility(true);
+            
+            await Task.Delay(1500); // Pause it
+            
+            //Setup the battle panels
+            _battleOverlayPanelViewModel.SetVisibility(false);
+            
+            await Task.Delay(1000); // Pause it
+            
+            ShowBattleActorDataPanels();
+            ShowPlayerBattleActionPanel();
+            
+        }
 
 
         /// <summary>
@@ -251,20 +268,6 @@ namespace Code.BattleSystem
             _playerWinViewModel.SetVisibility(false);
             _enemyWinViewModel.SetVisibility(false);
             _playerBattleActionViewModel.SetVisibility(false);
-        }
-
-        private async Task ShowBeginningOverlay()
-        {
-            HideAllUI();
-            _battleOverlayPanelViewModel.SetVisibility(true);
-            
-            await Task.Delay(2000);
-            
-            //Setup the battle panels
-            _battleOverlayPanelViewModel.SetVisibility(false);
-            ShowBattleActorUI();
-            ShowPlayerBattleActionPanel();
-            
         }
 
         private void ShowPlayerWinView()
@@ -314,11 +317,16 @@ namespace Code.BattleSystem
 
         private void ShowAllBattleUI()
         {
-            ShowBattleActorUI();
+            ShowBattleActorDataPanels();
+            ShowBattleActionSelectionPanel();
+        }
+
+        private void ShowBattleActionSelectionPanel()
+        {
             _playerBattleActionViewModel.SetVisibility(true);
         }
 
-        private void ShowBattleActorUI()
+        private void ShowBattleActorDataPanels()
         {
             _playerOnePanelViewModel.SetVisibility(true);
             _playerTwoPanelViewModel.SetVisibility(true);
@@ -328,6 +336,7 @@ namespace Code.BattleSystem
         {
             _playerOnePanelViewModel.SetVisibility(false);
             _playerTwoPanelViewModel.SetVisibility(false);
+            _actionPanelViewModel.SetVisibility(false);
             _playerBattleActionViewModel.SetVisibility(false);
         }
 

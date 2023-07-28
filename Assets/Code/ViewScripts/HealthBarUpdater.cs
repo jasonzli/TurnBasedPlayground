@@ -9,6 +9,7 @@ public class HealthBarUpdater : MonoBehaviour
     [SerializeField] private RectTransform _healthBarParent;
 
     private float animationTime = .4f;
+
     public async Task UpdateHealthBarFill(float percentToFill)
     {
         float elapsedTime = 0f;
@@ -23,5 +24,6 @@ public class HealthBarUpdater : MonoBehaviour
             
             _healthBarFill.sizeDelta = new Vector2(newDelta, _healthBarFill.sizeDelta.y);
         }
+        _healthBarFill.sizeDelta = new Vector2(endFill, _healthBarFill.sizeDelta.y);
     }
 }

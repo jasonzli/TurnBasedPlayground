@@ -18,6 +18,7 @@ namespace Code.ViewScripts
         private bool IsGuarding { get; set; }
         private bool IsPlayerOne { get; set; }
 
+        [SerializeField] private Animator _animator;
         [SerializeField] private RectTransform _TopContainer;
         [SerializeField] private RectTransform _MiddleContainer;
         [SerializeField] private RectTransform _LowerContainer;
@@ -35,6 +36,7 @@ namespace Code.ViewScripts
         public void Initialize(PlayerPanelViewModel context)
         {
             Name = context.Name;
+            gameObject.SetActive(true);
             _nameText.text = Name.ToUpper();
             CurrentHP = context.CurrentHP;
             MaxHP = context.MaxHP;
@@ -49,10 +51,8 @@ namespace Code.ViewScripts
             context.CurrentHP.PropertyChanged += UpdateCurrentHP;
             context.IsGuarding.PropertyChanged += UpdatePlayerUIStatus;
             context.Visibility.PropertyChanged += SetVisibility;
-            
-            _animator.ResetTrigger("Show");
-            _animator.ResetTrigger("Hide");
-            
+
+            ResetTriggers();
             SetVisibility(context.Visibility);
         }
         
@@ -66,11 +66,6 @@ namespace Code.ViewScripts
             {
                 _P2TokenContainer.gameObject.SetActive(true);
             }
-        }
-
-        private void OnEnable()
-        {
-            _animator = GetComponent<Animator>();
         }
 
         private void DeterminePanelUIState(bool isGuarding)
@@ -115,17 +110,20 @@ namespace Code.ViewScripts
             _healthBarUpdater.UpdateHealthBarFill( (float) CurrentHP/MaxHP);
         }
 
+        private void ResetTriggers()
+        {
+            _animator.ResetTrigger("Show");
+            _animator.ResetTrigger("Hide");
+        }
         public override void Show()
         {
-            gameObject.SetActive(true);
-            _animator.ResetTrigger("Hide");
+            ResetTriggers();
             _animator.SetTrigger("Show");
         }
 
         public override void Hide()
         {
-            gameObject.SetActive(false);
-            _animator.ResetTrigger("Show");
+            ResetTriggers();
             _animator.SetTrigger("Hide");
         }
     }

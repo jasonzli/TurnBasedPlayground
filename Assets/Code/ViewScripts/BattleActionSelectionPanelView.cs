@@ -11,6 +11,7 @@ namespace Code.ViewScripts
     /// </summary>
     public class BattleActionSelectionPanelView : ViewBase
     {
+        [SerializeField] private Animator _animator;
         [SerializeField] private GameObject _actionRowPrefab;
         [SerializeField] private RectTransform _actionContainer;
         
@@ -20,6 +21,8 @@ namespace Code.ViewScripts
         public void Initialize(BattleActionSelectionViewModel context)
         {
             _context = context;
+            gameObject.SetActive(true);
+            
             _context.Visibility.PropertyChanged += SetVisibility;
             
             //Clean up old action rows
@@ -27,10 +30,6 @@ namespace Code.ViewScripts
             {
                 Destroy(row);
             }
-            
-            _animator = GetComponent<Animator>();
-            _animator.ResetTrigger("Show");
-            _animator.ResetTrigger("Hide");
             
             //Setup action rows for each action
             foreach (BattleActionData actionData in context.AvailableBattleActionData)
@@ -43,17 +42,25 @@ namespace Code.ViewScripts
                 _actionRows.Add(actionRow);
             }
             
-            SetVisibility(_context.Visibility);
+            ResetTriggers();
+            SetVisibility(context.Visibility);
         }
 
+        private void ResetTriggers()
+        {
+            _animator.ResetTrigger("Show");
+            _animator.ResetTrigger("Hide");
+        }
         public override void Show()
         {
-            gameObject.SetActive(true);
+            ResetTriggers();
+            _animator.SetTrigger("Show");
         }
 
         public override void Hide()
         {
-            gameObject.SetActive(false);
+            ResetTriggers();
+            _animator.SetTrigger("Hide");
         }
 
     }

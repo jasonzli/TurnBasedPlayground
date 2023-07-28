@@ -8,18 +8,22 @@ namespace Code.ViewScripts
     public class ActionPanelView : ViewBase
     {
         private ActionPanelViewModel _context;
+        [SerializeField] private Animator _animator;
         [SerializeField] private TextMeshProUGUI _headerText;
         [SerializeField] private TextMeshProUGUI _bodyText;
 
         public void Initialize(ActionPanelViewModel context)
         {
             _context = context;
+            gameObject.SetActive(true);
+            
             _context.ActionName.PropertyChanged += UpdateBody;
             _context.SourceName.PropertyChanged += UpdateName;
 
             _context.Visibility.PropertyChanged += SetVisibility;
             
-            SetVisibility(_context.Visibility);
+            ResetTriggers();
+            SetVisibility(context.Visibility);
         }
         
         private void UpdateBody(string bodyText)
@@ -31,14 +35,21 @@ namespace Code.ViewScripts
         {
             _headerText.text = nameText.ToUpper() + " USED";
         }
+        private void ResetTriggers()
+        {
+            _animator.ResetTrigger("Show");
+            _animator.ResetTrigger("Hide");
+        }
         public override void Show()
         {
-            gameObject.SetActive(true);
+            ResetTriggers();
+            _animator.SetTrigger("Show");
         }
 
         public override void Hide()
         {
-            gameObject.SetActive(false);
+            ResetTriggers();
+            _animator.SetTrigger("Hide");
         }
     }
 }

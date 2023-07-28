@@ -1,4 +1,6 @@
 
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class HealthBarUpdater : MonoBehaviour
@@ -6,8 +8,20 @@ public class HealthBarUpdater : MonoBehaviour
     [SerializeField] private RectTransform _healthBarFill;
     [SerializeField] private RectTransform _healthBarParent;
 
-    public void UpdateHealthBarFill(float percentToFill)
+    private float animationTime = .4f;
+    public async Task UpdateHealthBarFill(float percentToFill)
     {
-        _healthBarFill.sizeDelta = new Vector2(_healthBarParent.rect.width * percentToFill, _healthBarFill.rect.height);
+        float elapsedTime = 0f;
+        float startFill = _healthBarFill.sizeDelta.x;
+        float endFill = _healthBarParent.rect.width * percentToFill;
+        while (elapsedTime < animationTime)
+        {
+            float t = elapsedTime / animationTime;
+            float newDelta = Mathf.Lerp(startFill,endFill,t * t * t);
+            elapsedTime += Time.deltaTime;
+            await Task.Yield();
+            
+            _healthBarFill.sizeDelta = new Vector2(newDelta, _healthBarFill.sizeDelta.y);
+        }
     }
 }

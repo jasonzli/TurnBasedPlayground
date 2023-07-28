@@ -1,4 +1,5 @@
 
+using System.Collections;
 using Code.ViewModels;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Code.ViewScripts
     public class BattleOverlayPanelUIView : ViewBase
     {
 
+        [SerializeField] private Animator _animator;
         [SerializeField] private TextMeshProUGUI _headerText;
         [SerializeField] private GameObject _buttonContainer;
         [SerializeField] private Button _buttonObject;
@@ -18,10 +20,12 @@ namespace Code.ViewScripts
 
         private BattleOverlayPanelViewModel _context;
         private Button _playAgainButton;
-
+        
         public void Initialize(BattleOverlayPanelViewModel context)
         {
             _context = context;
+            gameObject.SetActive(true);
+            
             _headerText.text = context.HeaderText;
             _showButton = context.ShowButton;
             _buttonObject.onClick.RemoveAllListeners();
@@ -38,6 +42,8 @@ namespace Code.ViewScripts
             context.Visibility.PropertyChanged += SetVisibility;
 
             SetText(context.HeaderText);
+            
+            ResetTriggers();
             SetVisibility(context.Visibility);
         }
 
@@ -52,15 +58,21 @@ namespace Code.ViewScripts
             _headerText.text = text.ToUpper();
         }
 
+        private void ResetTriggers()
+        {
+            _animator.ResetTrigger("Show");
+            _animator.ResetTrigger("Hide");
+        }
         public override void Show()
         {
-            gameObject.SetActive(true);
+            ResetTriggers();
+            _animator.SetTrigger("Show");
         }
 
         public override void Hide()
         {
-            gameObject.SetActive(false);
-            
+            ResetTriggers();
+            _animator.SetTrigger("Hide");
         }
     }
 }

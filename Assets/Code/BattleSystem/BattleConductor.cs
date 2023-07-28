@@ -119,11 +119,12 @@ namespace Code.BattleSystem
         {
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
-            await Task.Delay(1500);
+            await Task.Delay(1300);
+            _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
+            UpdatePlayerViewModels();
+            await Task.Delay(200);
             HideActionPanel(); //hide the action panel;
             
-            _battleSystem.PerformAction(action);
-            UpdatePlayerViewModels();
 
             //Increment turn
             turnIndex = (turnIndex + 1) % _turnOrder.Count;

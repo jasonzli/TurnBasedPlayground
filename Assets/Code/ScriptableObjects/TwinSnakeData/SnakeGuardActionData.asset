@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SnakeGuardActionData
   m_EditorClassIdentifier: 
   ActionName: Coil
-  HPDamage: 6
-  HealAmount: 0
-  DoesApplyGuard: 1
+  HPDamage: 3
+  HealAmount: 6
+  DoesApplyGuard: 0
   Icon: {fileID: 21300000, guid: d254b816aba8b4bd7a1ffa949ed650b4, type: 3}

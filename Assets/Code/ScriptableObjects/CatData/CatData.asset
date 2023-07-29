@@ -20,3 +20,4 @@ MonoBehaviour:
   AttackActionData: {fileID: 11400000, guid: 727fc07240d994edea85e1dd6e713bf6, type: 2}
   HealActionData: {fileID: 11400000, guid: 915df582643164676828841deb16d959, type: 2}
   GuardActionData: {fileID: 11400000, guid: 47c27a79565cf44a09359be264d44d18, type: 2}
+  HighResIcon: {fileID: 2800000, guid: 4af19979e37b94245ba6404d99748c8d, type: 3}

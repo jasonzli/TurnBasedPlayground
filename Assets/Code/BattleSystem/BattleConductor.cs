@@ -67,8 +67,10 @@ namespace Code.BattleSystem
         [ContextMenu("Reset")]
         public async Task ResetBattle()
         {
+            //Establish battle system
             _battleSystem = new BattleSystem(_playerData, _enemyData);
 
+            //Setup viewmodels with context
             _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, _playerData,true);
             _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, _enemyData,false);
             
@@ -88,6 +90,7 @@ namespace Code.BattleSystem
                 () => { ResetBattle();},
                 () => { AttemptURLAction();});
 
+            //Initialize views
             _playerPanel.Initialize(_playerOnePanelViewModel);
             UpdatePlayerMaterial(); // just for material setting
             _enemyPanel.Initialize(_playerTwoPanelViewModel);
@@ -98,15 +101,17 @@ namespace Code.BattleSystem
             _playerWinView.Initialize(_playerWinViewModel);
             _enemyWinView.Initialize(_enemyWinViewModel);
 
+            // Set internal data
             _turnOrder = new List<IBattleActor>();
             _turnOrder.Add(_battleSystem.PlayerOne);
             _turnOrder.Add(_battleSystem.PlayerTwo);
             turnIndex = 0;
 
-            HideAllUI();
-
+            //Set up the event to alert the battle system
             _playerBattleActionViewModel.OnActionSelected += SetAction;
 
+            //Set beginning
+            HideAllUI();
             ShowBeginningOverlay();
         }
 

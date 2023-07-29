@@ -1,0 +1,79 @@
+name: Acquire activation file
+on:
+  workflow_dispatch: {}
+
+jobs:
+  buildForPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows # Build a Windows standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
+          #- iOS # Build an iOS player.
+          - Android # Build an Android .apk standalone app.
+          #- WebGL # WebGL.
+    steps:
+      # Check out the appropriate branch
+      - name: Checkout the branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  
+      # Cache the library folder
+      - name: Cache the library
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      - name: Build the project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          # customParameters:
+          versioning: Semantic
+      - name: Upload Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+
+  # DeployToOutputs:
+  #   needs: buildForPlatforms
+  #   name: Deploy to Itch
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       target-platform-channel:
+  #         - {platform: StandaloneWindows64, channel: windows}
+  #         - {platform: StandaloneOSX, channel: osx}
+  #         - {platform: Android, channel: android}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #       with:
+  #         lfs: true
+
+  #     - uses: actions/download-artifact@v2
+  #       with:
+  #         name: build-${{ matrix.target-platform-channel.platform }}
+  #         path: build
+
+  #     - name: Deploy to Itch
+  #       id: itch-deploy
+  #       uses: manleydev/butler-publish-itchio-action@master
+  #       env:
+  #         BUTLER_CREDENTIALS: ${{ secrets.JASON_ITCH_BUTLER_CREDENTIALS }}
+  #         CHANNEL: ${{ matrix.target-platform-channel.channel }}
+  #         ITCH_GAME: FA22-DEMOSCENE-SHOWCASE
+  #         ITCH_USER: ovenfresh
+  #         PACKAGE: build

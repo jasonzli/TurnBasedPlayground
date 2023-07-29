@@ -49,33 +49,34 @@ jobs:
           name: build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
 
-  DeployToOutputs:
-    needs: buildForPlatforms
-    name: Deploy to Itch
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        target-platform-channel:
-          - {platform: StandaloneWindows64, channel: windows}
-          - {platform: StandaloneOSX, channel: osx}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          lfs: true
+  # DeployToOutputs:
+  #   needs: buildForPlatforms
+  #   name: Deploy to Itch
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       target-platform-channel:
+  #         - {platform: StandaloneWindows64, channel: windows}
+  #         - {platform: StandaloneOSX, channel: osx}
+  #         - {platform: Android, channel: android}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #       with:
+  #         lfs: true
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build-${{ matrix.target-platform-channel.platform }}
-          path: build
+  #     - uses: actions/download-artifact@v2
+  #       with:
+  #         name: build-${{ matrix.target-platform-channel.platform }}
+  #         path: build
 
-      - name: Deploy to Itch
-        id: itch-deploy
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.JASON_ITCH_BUTLER_CREDENTIALS }}
-          CHANNEL: ${{ matrix.target-platform-channel.channel }}
-          ITCH_GAME: FA22-DEMOSCENE-SHOWCASE
-          ITCH_USER: ovenfresh
-          PACKAGE: build
+  #     - name: Deploy to Itch
+  #       id: itch-deploy
+  #       uses: manleydev/butler-publish-itchio-action@master
+  #       env:
+  #         BUTLER_CREDENTIALS: ${{ secrets.JASON_ITCH_BUTLER_CREDENTIALS }}
+  #         CHANNEL: ${{ matrix.target-platform-channel.channel }}
+  #         ITCH_GAME: FA22-DEMOSCENE-SHOWCASE
+  #         ITCH_USER: ovenfresh
+  #         PACKAGE: build

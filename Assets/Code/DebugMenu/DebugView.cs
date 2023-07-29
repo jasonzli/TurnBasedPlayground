@@ -20,6 +20,7 @@ namespace Code.DebugMenu
         [SerializeField] private Button CatButton;
         [SerializeField] private Button ResetButton;
         [SerializeField] private Button CloseButton;
+        [SerializeField] private Button OpenButton;
         [SerializeField] private Button HealthAddButton;
         [SerializeField] private Button HealthSubtractButton;
         [SerializeField] private Button HealPowerAddButton;
@@ -55,6 +56,7 @@ namespace Code.DebugMenu
             CatButton.onClick.RemoveAllListeners();
             ResetButton.onClick.RemoveAllListeners();
             CloseButton.onClick.RemoveAllListeners();
+            OpenButton.onClick.RemoveAllListeners();
             
             ElementalButton.onClick.AddListener(() => { _context.SetToActorData(_elementalData);});
             SnakeButton.onClick.AddListener(() => { _context.SetToActorData(_snakeData);});
@@ -75,6 +77,7 @@ namespace Code.DebugMenu
                 _context.TriggerResetWithData();
             });
             CloseButton.onClick.AddListener(() => { _context.CloseDebugMenu(); });
+            OpenButton.onClick.AddListener(() => { _context.OpenDebugMenu(); });
 
             ResetTriggers();
             SetVisibility(_context.Visibility);

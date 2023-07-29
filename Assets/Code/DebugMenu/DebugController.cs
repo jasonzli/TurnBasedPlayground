@@ -19,12 +19,5 @@ namespace Code.DebugMenu
             _debugView.Initialize(_debugViewModel);
         }
 
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                _debugViewModel.OpenDebugMenu();
-            }
-        }
     }
 }

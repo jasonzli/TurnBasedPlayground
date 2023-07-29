@@ -21,7 +21,7 @@ namespace Code.DebugMenu
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q) && Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 _debugViewModel.OpenDebugMenu();
             }

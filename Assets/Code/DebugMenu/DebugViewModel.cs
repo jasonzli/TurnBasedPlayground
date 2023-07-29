@@ -39,16 +39,22 @@ namespace Code.DebugMenu
             actorToManipulate.Name = actorData.Name;
             actorToManipulate.Health = actorData.Health;
         
-            actorToManipulate.HealActionData.HealAmount = actorData.HealActionData.HealAmount;
-            actorToManipulate.HealActionData.ActionName = actorData.HealActionData.ActionName;
-        
-            actorToManipulate.AttackActionData.HPDamage = actorData.AttackActionData.HPDamage;
-            actorToManipulate.AttackActionData.ActionName = actorData.AttackActionData.ActionName;
-        
-            actorToManipulate.GuardActionData.ActionName = actorData.GuardActionData.ActionName;
+            CopyActionDataFromTo(actorData.HealActionData,actorToManipulate.HealActionData);
+            CopyActionDataFromTo(actorData.AttackActionData, actorToManipulate.AttackActionData);
+            CopyActionDataFromTo(actorData.GuardActionData, actorToManipulate.GuardActionData);
         
             actorToManipulate.Icon = actorData.Icon;
+            actorToManipulate.HighResIcon = actorData.HighResIcon;
         }
+        
+        private void CopyActionDataFromTo(BattleActionData source, BattleActionData destination)
+        {
+            destination.HPDamage = source.HPDamage;
+            destination.HealAmount = source.HealAmount;
+            destination.DoesApplyGuard = source.DoesApplyGuard;
+            destination.ActionName = source.ActionName;
+        }
+        
 
         private void UpdateActorWithCurrentData()
         {

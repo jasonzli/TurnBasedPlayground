@@ -22,6 +22,7 @@ namespace Code.DebugMenu
         [SerializeField] private Button ResetButton;
         [SerializeField] private Button CloseButton;
         [SerializeField] private Button OpenButton;
+        [SerializeField] private Button UnsafeResetButton;
         [SerializeField] private EventTrigger OpenButtonTrigger;
         [SerializeField] private Button HealthAddButton;
         [SerializeField] private Button HealthSubtractButton;
@@ -83,6 +84,11 @@ namespace Code.DebugMenu
             {
                 _context.CloseDebugMenu();
                 _context.TriggerResetWithData();
+            });
+            UnsafeResetButton.onClick.AddListener(() =>
+            {
+                _context.CloseDebugMenu();
+                _context.TriggerResetWithDataUnsafe();
             });
             CloseButton.onClick.AddListener(() => { _context.CloseDebugMenu(); });
             OpenButton.onClick.AddListener(() => { _context.OpenDebugMenu(); });

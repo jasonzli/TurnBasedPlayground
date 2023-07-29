@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionName: Coil
   HPDamage: 3
-  HealAmount: 6
+  HealAmount: 4
   DoesApplyGuard: 0
   Icon: {fileID: 21300000, guid: d254b816aba8b4bd7a1ffa949ed650b4, type: 3}

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActionName: Crush
   HPDamage: 16
-  HealAmount: 0
+  HealAmount: -2
   DoesApplyGuard: 0
   Icon: {fileID: 21300000, guid: 11a31e4ad04404286afb644a4f905e92, type: 3}

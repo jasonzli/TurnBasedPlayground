@@ -11,11 +11,11 @@ namespace Code.DebugMenu
         
         public void Start()
         {
-            _debugViewModel = new DebugViewModel(() =>
-            {
-                _conductor.ResetBattle();
-            }, _conductor.playerOneData);
-            
+            _debugViewModel = new DebugViewModel(
+            () => { _conductor.ResetBattle(false);},
+       () => { _conductor.ResetBattle(true); }, //This is the only way to activate an unsafe battle.
+                    _conductor.playerOneData
+            );
             _debugView.Initialize(_debugViewModel);
         }
 

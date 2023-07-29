@@ -97,7 +97,7 @@ namespace Code.DebugMenu
     
         public void SubtractHealth()
         {
-            HealthValue.Value--;
+            HealthValue.Value = Math.Max(0, HealthValue.Value - 1);
         }
     
         public void AddHealPower()
@@ -107,7 +107,7 @@ namespace Code.DebugMenu
     
         public void SubtractHealPower()
         {
-            HealPower.Value--;
+            HealPower.Value = Math.Max(0, HealPower.Value - 1);
         }
     
         public void AddAttackPower()
@@ -117,7 +117,7 @@ namespace Code.DebugMenu
     
         public void SubtractAttackPower()
         {
-            AttackPower.Value--;
+            AttackPower.Value = Math.Max(0, AttackPower.Value - 1);
         }
     }
 }

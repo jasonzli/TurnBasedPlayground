@@ -2,6 +2,7 @@ using Code.ScriptableObjects;
 using Code.ViewScripts;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Code.DebugMenu
@@ -21,6 +22,7 @@ namespace Code.DebugMenu
         [SerializeField] private Button ResetButton;
         [SerializeField] private Button CloseButton;
         [SerializeField] private Button OpenButton;
+        [SerializeField] private EventTrigger OpenButtonTrigger;
         [SerializeField] private Button HealthAddButton;
         [SerializeField] private Button HealthSubtractButton;
         [SerializeField] private Button HealPowerAddButton;
@@ -50,14 +52,20 @@ namespace Code.DebugMenu
             _context.HealPower.PropertyChanged += UpdateHealPower;
             _context.AttackPower.PropertyChanged += UpdateAttackPower;
             _context.Visibility.PropertyChanged += SetVisibility;
+            _context.ButtonVisibility.PropertyChanged += SetButtonVisibility;
 
             ElementalButton.onClick.RemoveAllListeners();
             SnakeButton.onClick.RemoveAllListeners();
             CatButton.onClick.RemoveAllListeners();
             ResetButton.onClick.RemoveAllListeners();
             CloseButton.onClick.RemoveAllListeners();
-            OpenButton.onClick.RemoveAllListeners();
             
+            //I will fully admit to not previously knowing this was possible to do this.
+            OpenButtonTrigger.triggers[0].callback.RemoveAllListeners();
+            OpenButtonTrigger.triggers[1].callback.RemoveAllListeners();
+            OpenButtonTrigger.triggers[0].callback.AddListener((data) => { _context.SetButtonVisibility(true); });
+            OpenButtonTrigger.triggers[1].callback.AddListener((data) => { _context.SetButtonVisibility(false); });
+                
             ElementalButton.onClick.AddListener(() => { _context.SetToActorData(_elementalData);});
             SnakeButton.onClick.AddListener(() => { _context.SetToActorData(_snakeData);});
             CatButton.onClick.AddListener(() => { _context.SetToActorData(_catData);});
@@ -103,6 +111,13 @@ namespace Code.DebugMenu
         {
             HealthValue = value;
             HealthText.text = "Health: " + HealthValue;
+        }
+
+        private void SetButtonVisibility(bool visibility)
+        {
+            _animator.ResetTrigger("ShowButton");
+            _animator.ResetTrigger("HideButton");
+            _animator.SetTrigger(visibility ? "ShowButton" : "HideButton");
         }
         
         private void ResetTriggers()

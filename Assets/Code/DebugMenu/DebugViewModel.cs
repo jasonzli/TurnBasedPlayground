@@ -13,6 +13,7 @@ namespace Code.DebugMenu
         public Observable<int> HealPower = new Observable<int>();
         public Observable<int> AttackPower = new Observable<int>();
         public Observable<bool> Visibility = new Observable<bool>();
+        public Observable<bool> ButtonVisibility = new Observable<bool>();
 
         public Action ResetFunction;
         private BattleConductor _conductor;
@@ -22,8 +23,14 @@ namespace Code.DebugMenu
         {
             ResetFunction = resetFunction;
             actorToManipulate = actorData;
+            ButtonVisibility.Value = false;
             SetToActorData(actorToManipulate);
             SetVisibility(false);
+        }
+        
+        public void SetButtonVisibility(bool visibility)
+        {
+            ButtonVisibility.Value = visibility;
         }
 
         public void SetToActorData(ActorData actorData)

@@ -16,12 +16,14 @@ namespace Code.DebugMenu
         public Observable<bool> ButtonVisibility = new Observable<bool>();
 
         public Action ResetFunction;
+        public Action UnsafeResetFunction;
         private BattleConductor _conductor;
         private ActorData actorToManipulate;
     
-        public DebugViewModel(Action resetFunction, ActorData actorData)
+        public DebugViewModel(Action resetFunction, Action unsafeResetFunction, ActorData actorData)
         {
             ResetFunction = resetFunction;
+            UnsafeResetFunction = unsafeResetFunction;
             actorToManipulate = actorData;
             ButtonVisibility.Value = false;
             SetToActorData(actorToManipulate);
@@ -74,6 +76,12 @@ namespace Code.DebugMenu
         {
             UpdateActorWithCurrentData();
             ResetFunction?.Invoke();
+        }
+
+        public void TriggerResetWithDataUnsafe()
+        {
+            UpdateActorWithCurrentData();
+            UnsafeResetFunction?.Invoke();
         }
     
         public void OpenDebugMenu()

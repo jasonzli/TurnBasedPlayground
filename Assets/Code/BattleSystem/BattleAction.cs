@@ -54,7 +54,7 @@ namespace Code.BattleSystem
             }
             return true;
         }
-        
-        
+
+
     }
 }

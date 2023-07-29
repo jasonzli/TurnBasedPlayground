@@ -1,3 +1,4 @@
+using System;
 using Code.BattleSystem;
 using Code.ProtoVM;
 using Code.ScriptableObjects;
@@ -39,7 +40,7 @@ namespace Code.ViewModels
 
         public void UpdateFromBattleActor()
         {
-            CurrentHP.Value = _actorContext.CurrentHP;
+            CurrentHP.Value = Math.Max(0,_actorContext.CurrentHP);
             IsGuarding.Value = _actorContext.Guarded;
         }
         

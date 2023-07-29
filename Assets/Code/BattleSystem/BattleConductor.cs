@@ -55,6 +55,7 @@ namespace Code.BattleSystem
         //Internal  data for battle
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
         private int turnIndex = 0;
+        private bool _unsafeBattle = false;
 
         [Header("Player Material for Debug Purposes")]
         [SerializeField] private Material _playerMaterial;
@@ -65,7 +66,7 @@ namespace Code.BattleSystem
         }
 
         [ContextMenu("Reset")]
-        public async Task ResetBattle()
+        public async Task ResetBattle(bool unsafeBattle = false)
         {
             //Establish battle system
             _battleSystem = new BattleSystem(_playerData, _enemyData);
@@ -106,6 +107,7 @@ namespace Code.BattleSystem
             _turnOrder.Add(_battleSystem.PlayerOne);
             _turnOrder.Add(_battleSystem.PlayerTwo);
             turnIndex = 0;
+            _unsafeBattle = unsafeBattle;
 
             //Set up the event to alert the battle system
             _playerBattleActionViewModel.OnActionSelected += SetAction;
@@ -129,7 +131,7 @@ namespace Code.BattleSystem
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
             await Task.Delay(1300);
-            _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
+            _battleSystem.PerformAction(action,_unsafeBattle);//trigger the attack a little earlier to allow animation to play
             UpdatePlayerViewModels();
             await Task.Delay(200);
             HideActionPanel(); //hide the action panel;

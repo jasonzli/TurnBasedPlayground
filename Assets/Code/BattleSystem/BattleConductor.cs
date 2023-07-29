@@ -20,6 +20,7 @@ namespace Code.BattleSystem
     public class BattleConductor : MonoBehaviour
     {
         //Data to setup players
+        [Header("Actor Data Objects")]
         [SerializeField] private ActorData _playerData;
 
         public ActorData playerOneData
@@ -30,6 +31,7 @@ namespace Code.BattleSystem
         [SerializeField] private ActorData _enemyData;
 
         //Buttons and panels to display
+        [Header("UI View Objects")]
         [SerializeField] private BattleOverlayPanelUIView _battleBeginsOverlayPanelUIView;
         [SerializeField] private BattleOverlayPanelUIView _playerWinView;
         [SerializeField] private BattleOverlayPanelUIView _enemyWinView;
@@ -54,6 +56,9 @@ namespace Code.BattleSystem
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
         private int turnIndex = 0;
 
+        [Header("Player Material for Debug Purposes")]
+        [SerializeField] private Material _playerMaterial;
+        
         void Start()
         {
             ResetBattle();
@@ -84,6 +89,7 @@ namespace Code.BattleSystem
                 () => { AttemptURLAction();});
 
             _playerPanel.Initialize(_playerOnePanelViewModel);
+            UpdatePlayerMaterial(); // just for material setting
             _enemyPanel.Initialize(_playerTwoPanelViewModel);
             _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
             _battleBeginsOverlayPanelUIView.Initialize(_battleOverlayPanelViewModel);
@@ -91,8 +97,6 @@ namespace Code.BattleSystem
             _errorPanelView.Initialize(_errorPanelViewModel);
             _playerWinView.Initialize(_playerWinViewModel);
             _enemyWinView.Initialize(_enemyWinViewModel);
-
-            HideBattleActorUI();
 
             _turnOrder = new List<IBattleActor>();
             _turnOrder.Add(_battleSystem.PlayerOne);
@@ -180,7 +184,7 @@ namespace Code.BattleSystem
         }
 
         //Essential function to fetch the action from the URL
-        private async Task<URLBattleAction> FetchAction()
+        private async Task<BattleAction> FetchAction()
         {
             //Get the action from the EnemyAction url
             string response = await URLUtility.FetchJSONStringFromURL(_enemyData.URL);
@@ -203,8 +207,8 @@ namespace Code.BattleSystem
             }
 
             //Battle Action data is good,create battle Action
-            URLBattleAction urlAction =
-                new URLBattleAction(battleActionData, _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
+            BattleAction urlAction =
+                new BattleAction(battleActionData, _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
 
             return urlAction;
 
@@ -352,5 +356,14 @@ namespace Code.BattleSystem
 
         #endregion
 
+        
+        #region I want to change textures I'm sorry
+
+        public void UpdatePlayerMaterial()
+        {
+            _playerMaterial.SetTexture("_MainTex", _playerData.HighResIcon);
+        }
+
+        #endregion
     }
 }

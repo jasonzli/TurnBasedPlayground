@@ -3,7 +3,8 @@ using System;
 namespace Code.BattleSystem
 {
     /// <summary>
-    /// Base class with esential battle functions
+    /// Base class with essential battle functions
+    /// Might be other types of battle actions so we'll leave this for now
     /// </summary>
     public abstract class BattleActionBase : IBattleAction
     {

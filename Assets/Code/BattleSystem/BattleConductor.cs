@@ -20,6 +20,7 @@ namespace Code.BattleSystem
     public class BattleConductor : MonoBehaviour
     {
         //Data to setup players
+        [Header("Actor Data Objects")]
         [SerializeField] private ActorData _playerData;
 
         public ActorData playerOneData
@@ -30,6 +31,7 @@ namespace Code.BattleSystem
         [SerializeField] private ActorData _enemyData;
 
         //Buttons and panels to display
+        [Header("UI View Objects")]
         [SerializeField] private BattleOverlayPanelUIView _battleBeginsOverlayPanelUIView;
         [SerializeField] private BattleOverlayPanelUIView _playerWinView;
         [SerializeField] private BattleOverlayPanelUIView _enemyWinView;
@@ -54,6 +56,9 @@ namespace Code.BattleSystem
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
         private int turnIndex = 0;
 
+        [Header("Player Material for Debug Purposes")]
+        [SerializeField] private Material _playerMaterial;
+        
         void Start()
         {
             ResetBattle();
@@ -62,14 +67,18 @@ namespace Code.BattleSystem
         [ContextMenu("Reset")]
         public async Task ResetBattle()
         {
+            //Establish battle system
             _battleSystem = new BattleSystem(_playerData, _enemyData);
 
-            _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, true);
-            _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, false);
+            //Setup viewmodels with context
+            _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, _playerData,true);
+            _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, _enemyData,false);
+            
             List<BattleActionData> playerOneActions = new List<BattleActionData>()
                 { _playerData.AttackActionData, _playerData.HealActionData, _playerData.GuardActionData };
             _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions, _battleSystem.PlayerOne,
                 _battleSystem.PlayerTwo);
+            
             _battleOverlayPanelViewModel = new BattleOverlayPanelViewModel("Combat Begins", false, true, () => { });
             _playerWinViewModel = new BattleOverlayPanelViewModel($"{_battleSystem.PlayerOne.Name} Wins!", true, false,
                 () => { ResetBattle(); });
@@ -81,7 +90,9 @@ namespace Code.BattleSystem
                 () => { ResetBattle();},
                 () => { AttemptURLAction();});
 
+            //Initialize views
             _playerPanel.Initialize(_playerOnePanelViewModel);
+            UpdatePlayerMaterial(); // just for material setting
             _enemyPanel.Initialize(_playerTwoPanelViewModel);
             _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
             _battleBeginsOverlayPanelUIView.Initialize(_battleOverlayPanelViewModel);
@@ -90,17 +101,17 @@ namespace Code.BattleSystem
             _playerWinView.Initialize(_playerWinViewModel);
             _enemyWinView.Initialize(_enemyWinViewModel);
 
-            HideBattleActorUI();
-
+            // Set internal data
             _turnOrder = new List<IBattleActor>();
             _turnOrder.Add(_battleSystem.PlayerOne);
             _turnOrder.Add(_battleSystem.PlayerTwo);
             turnIndex = 0;
 
-            HideAllUI();
-
+            //Set up the event to alert the battle system
             _playerBattleActionViewModel.OnActionSelected += SetAction;
 
+            //Set beginning
+            HideAllUI();
             ShowBeginningOverlay();
         }
 
@@ -117,11 +128,12 @@ namespace Code.BattleSystem
         {
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
-            await Task.Delay(1500);
+            await Task.Delay(1300);
+            _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
+            UpdatePlayerViewModels();
+            await Task.Delay(200);
             HideActionPanel(); //hide the action panel;
             
-            _battleSystem.PerformAction(action);
-            UpdatePlayerViewModels();
 
             //Increment turn
             turnIndex = (turnIndex + 1) % _turnOrder.Count;
@@ -177,7 +189,7 @@ namespace Code.BattleSystem
         }
 
         //Essential function to fetch the action from the URL
-        private async Task<URLBattleAction> FetchAction()
+        private async Task<BattleAction> FetchAction()
         {
             //Get the action from the EnemyAction url
             string response = await URLUtility.FetchJSONStringFromURL(_enemyData.URL);
@@ -200,8 +212,8 @@ namespace Code.BattleSystem
             }
 
             //Battle Action data is good,create battle Action
-            URLBattleAction urlAction =
-                new URLBattleAction(battleActionData, _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
+            BattleAction urlAction =
+                new BattleAction(battleActionData, _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
 
             return urlAction;
 
@@ -349,5 +361,14 @@ namespace Code.BattleSystem
 
         #endregion
 
+        
+        #region I want to change textures I'm sorry
+
+        public void UpdatePlayerMaterial()
+        {
+            _playerMaterial.SetTexture("_MainTex", _playerData.HighResIcon);
+        }
+
+        #endregion
     }
 }

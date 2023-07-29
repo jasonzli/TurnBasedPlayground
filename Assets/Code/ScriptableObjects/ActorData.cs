@@ -17,6 +17,7 @@ namespace Code.ScriptableObjects
         public BattleActionData HealActionData;
         public BattleActionData GuardActionData;
 
- 
+        public Texture2D HighResIcon;
+
     }
 }

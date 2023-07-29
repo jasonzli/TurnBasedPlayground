@@ -69,7 +69,11 @@ namespace Code.DebugMenu
             AttackPowerAddButton.onClick.AddListener(() => { _context.AddAttackPower();});
             AttackPowerSubtractButton.onClick.AddListener(() => { _context.SubtractAttackPower();});
             
-            ResetButton.onClick.AddListener(() => { _context.CloseDebugMenu(); _context.TriggerReset(); });
+            ResetButton.onClick.AddListener(() =>
+            {
+                _context.CloseDebugMenu();
+                _context.TriggerResetWithData();
+            });
             CloseButton.onClick.AddListener(() => { _context.CloseDebugMenu(); });
 
             ResetTriggers();

@@ -55,7 +55,6 @@ namespace Code.BattleSystem
         //Internal  data for battle
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
         private int turnIndex = 0;
-        private bool _unsafeBattle = false;
 
         [Header("Player Material for Debug Purposes")]
         [SerializeField] private Material _playerMaterial;

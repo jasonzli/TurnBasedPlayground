@@ -38,6 +38,17 @@ namespace Code.ViewModels
         /// </summary>
         /// <param name="actionData">The set action data from the action panel</param>
         /// <remarks> Imagine a world where parameters can be modified and updated, that's why we're creating them here</remarks>
+        public void SendActionToConductor(BattleActionData actionData)
+        {
+            if (UnsafeBattle)
+            {
+                SendUnsafeBattleActionData(actionData);
+            }
+            else
+            {
+                SendBattleActionData(actionData);
+            }
+        }
         public void SendBattleActionData(BattleActionData actionData)
         {
             BattleAction newAction = new BattleAction (actionData.AsSafeBattleActionParameters() , Source, Target);
@@ -49,18 +60,6 @@ namespace Code.ViewModels
             BattleAction newAction = new BattleAction (actionData.AsBattleActionParameters() , Source, Target);
             UnsafeBattleAction unsafeBattleAction = new UnsafeBattleAction(newAction);
             OnActionSelected?.Invoke(unsafeBattleAction);
-        }
-        
-        public void SendActionToConductor(BattleActionData actionData)
-        {
-            if (UnsafeBattle)
-            {
-                SendUnsafeBattleActionData(actionData);
-            }
-            else
-            {
-                SendBattleActionData(actionData);
-            }
         }
 
 

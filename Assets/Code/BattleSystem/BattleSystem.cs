@@ -58,17 +58,9 @@ namespace Code.BattleSystem
             return null;
         }
         
-        public void PerformAction(IBattleAction action, bool unsafeAction = false)
+        public void PerformAction(IBattleAction action)
         {
-            if (unsafeAction)
-            {
-                UnsafeBattleAction unsafeBattleAction = new UnsafeBattleAction(action);
-                unsafeBattleAction.Execute();
-            }
-            else
-            {
-                action.Execute();
-            }
+            action.Execute();
             ActionsTaken.Add(action);
             Winner = EvaluateWinner();
         }

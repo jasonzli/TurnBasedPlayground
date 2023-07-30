@@ -1,5 +1,7 @@
+using System;
 using Code.BattleSystem;
 using Code.ScriptableObjects;
+using UnityEngine;
 
 namespace Code.Utility
 {
@@ -24,6 +26,17 @@ namespace Code.Utility
                 doesApplyGuard = data.DoesApplyGuard,
             };
 
+        }
+
+        public static BattleActionParameters AsSafeBattleActionParameters(this BattleActionData data)
+        {
+            return new BattleActionParameters()
+            {
+                MoveName = data.ActionName,
+                hpDamage = Math.Max(0,data.HPDamage),
+                healAmount = Math.Max(0,data.HealAmount),
+                doesApplyGuard = data.DoesApplyGuard,
+            };
         }
     }
 }

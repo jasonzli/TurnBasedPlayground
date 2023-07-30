@@ -1130,6 +1130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1727068806}
     m_Modifications:
+    - target: {fileID: 52100231317710930, guid: 9ce2359ab870e46bfbc842e191c4a342, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 52100231317710932, guid: 9ce2359ab870e46bfbc842e191c4a342, type: 3}
       propertyPath: m_Name
       value: TitleOverlayContainerEnemyWon
@@ -1501,6 +1505,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1727068806}
     m_Modifications:
+    - target: {fileID: 52100231317710930, guid: 968b701df88754f7aa392ab11206a008, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 52100231317710932, guid: 968b701df88754f7aa392ab11206a008, type: 3}
       propertyPath: m_Name
       value: TitleOverlayContainerCombatBegins
@@ -1622,6 +1630,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1727068806}
     m_Modifications:
+    - target: {fileID: 52100231317710930, guid: a1cd5c138414c4c22971ebcac97f20ec, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 52100231317710932, guid: a1cd5c138414c4c22971ebcac97f20ec, type: 3}
       propertyPath: m_Name
       value: TitleOverlayContainerPlayerWon

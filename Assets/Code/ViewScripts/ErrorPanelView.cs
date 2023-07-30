@@ -36,6 +36,8 @@ namespace Code.ViewScripts
             {
                 _context.SetVisibility(false);
             });
+            
+            SetVisibility(context.Visibility);
         }
         
         private void UpdateErrorString(string message)

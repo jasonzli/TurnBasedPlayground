@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468c902ae5b34cf8900d1a0c504b6104, type: 3}
   m_Name: ElementalGuardActionData
   m_EditorClassIdentifier: 
-  ActionName: Wall
+  ActionName: Solidify
   HPDamage: 0
   HealAmount: 3
   DoesApplyGuard: 1

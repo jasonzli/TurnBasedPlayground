@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468c902ae5b34cf8900d1a0c504b6104, type: 3}
   m_Name: ElementalAttackActionData
   m_EditorClassIdentifier: 
-  ActionName: Crush
-  HPDamage: 16
+  ActionName: Impact
+  HPDamage: 6
   HealAmount: -2
-  DoesApplyGuard: 0
+  DoesApplyGuard: 1
   Icon: {fileID: 21300000, guid: 11a31e4ad04404286afb644a4f905e92, type: 3}

@@ -78,7 +78,7 @@ namespace Code.BattleSystem
             List<BattleActionData> playerOneActions = new List<BattleActionData>()
                 { _playerData.AttackActionData, _playerData.HealActionData, _playerData.GuardActionData };
             _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions, _battleSystem.PlayerOne,
-                _battleSystem.PlayerTwo);
+                _battleSystem.PlayerTwo, unsafeBattle);
             
             _battleOverlayPanelViewModel = new BattleOverlayPanelViewModel("Combat Begins", false, true, () => { });
             _playerWinViewModel = new BattleOverlayPanelViewModel($"{_battleSystem.PlayerOne.Name} Wins!", true, false,
@@ -107,7 +107,6 @@ namespace Code.BattleSystem
             _turnOrder.Add(_battleSystem.PlayerOne);
             _turnOrder.Add(_battleSystem.PlayerTwo);
             turnIndex = 0;
-            _unsafeBattle = unsafeBattle;
 
             //Set up the event to alert the battle system
             _playerBattleActionViewModel.OnActionSelected += SetAction;
@@ -131,7 +130,7 @@ namespace Code.BattleSystem
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
             await Task.Delay(1300);
-            _battleSystem.PerformAction(action,_unsafeBattle);//trigger the attack a little earlier to allow animation to play
+            _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
             UpdatePlayerViewModels();
             await Task.Delay(200);
             HideActionPanel(); //hide the action panel;

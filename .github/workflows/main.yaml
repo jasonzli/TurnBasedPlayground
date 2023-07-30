@@ -1,4 +1,4 @@
-name: Activate License
+name: Trigger Builds
 on:
   workflow_dispatch: {}
 
@@ -20,12 +20,12 @@ jobs:
     steps:
       # Check out the appropriate branch
       - name: Checkout the branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0  
       # Cache the library folder
       - name: Cache the library
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
@@ -40,8 +40,10 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           # customParameters:
           versioning: Semantic
+      - name: Tar files
+        run: tar -cvf ${{matrix.targetPlatform}}.tar build/${{ matrix.targetPlatform }}
       - name: Upload Build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}

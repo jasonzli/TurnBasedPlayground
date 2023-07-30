@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4454370064871549569}
-  _actionRowPrefab: {fileID: 4710231472951907554, guid: 4ed0d4ff11b7c4db597ad6cae9f827e5, type: 3}
+  _actionRowPrefab: {fileID: 1343825056985404681, guid: 71c345cbeeb71459ab1dae93eb0b0937, type: 3}
   _actionContainer: {fileID: 6215578128988431299}
 --- !u!95 &4454370064871549569
 Animator:

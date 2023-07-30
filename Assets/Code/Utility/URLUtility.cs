@@ -8,6 +8,11 @@ namespace Code.Utility
     /// </summary>
     public static class URLUtility
     {
+        /// <summary>
+        /// There are a few kinds of errors that can come from these awaits. We try our best to catch them here before something else happens
+        /// </summary>
+        /// <param name="url">the url to ping</param>
+        /// <returns>url response</returns>
         public static async Task<string> FetchJSONStringFromURL(string url)
         {
             using (var client = new HttpClient())

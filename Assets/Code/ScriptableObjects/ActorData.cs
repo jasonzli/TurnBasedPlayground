@@ -13,6 +13,7 @@ namespace Code.ScriptableObjects
         public int Health;
         public bool UseURLBrain;
         public string URL;
+        
         public BattleActionData AttackActionData;
         public BattleActionData HealActionData;
         public BattleActionData GuardActionData;

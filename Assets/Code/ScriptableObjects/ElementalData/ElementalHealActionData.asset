@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ElementalHealActionData
   m_EditorClassIdentifier: 
   ActionName: Hone
-  HPDamage: 1
-  HealAmount: 6
+  HPDamage: 0
+  HealAmount: 8
   DoesApplyGuard: 0
   Icon: {fileID: 21300000, guid: 1ca55756456074a18bbac1c1f7b73368, type: 3}

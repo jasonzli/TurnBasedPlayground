@@ -18,7 +18,6 @@ namespace Code.ViewModels
             ActionName.Value = action.Parameters.MoveName;
         }
 
-
         public void SetVisibility(bool visibility)
         {
             Visibility.Value = visibility;

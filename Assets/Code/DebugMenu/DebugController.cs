@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Code.DebugMenu
 {
+    /// <summary>
+    /// Monobehavior layer for setting up the debug menu.
+    /// Has a dependency on needing to have a conductor to actually reference.
+    /// </summary>
     public class DebugController : MonoBehaviour
     {
         private DebugViewModel _debugViewModel;
@@ -18,6 +22,15 @@ namespace Code.DebugMenu
             );
             _debugView.Initialize(_debugViewModel);
         }
+
+        public void Awake()
+        {
+            #if UNITY_ANDROID
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 90;
+            #endif
+        }
+        
 
     }
 }

@@ -5,10 +5,12 @@ namespace Code.ViewModels
 {
     /// <summary>
     /// The overlay viewmodel
-    ///
-    /// This is more complex than it needed to be in this prototype. There was an intention to have it be *one* object
-    /// that is updated as needed, but the way the prototype shook out, it was easier to just have 3 of them.
     /// </summary>
+    /// <remarks>
+    /// This is more complex than it needed to be in this prototype. There was an intention to have it be *one* object
+    /// that is updated as needed, but the way the prototype shook out, it was easier to just have 3 of them. But to
+    /// make it so there would be one, we'd have to add the color configurations and that was just too much for me.
+    /// </remarks>
     public class BattleOverlayPanelViewModel : IViewModel
     {
         

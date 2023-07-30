@@ -2,6 +2,7 @@ using System;
 using Code.BattleSystem;
 using Code.ProtoVM;
 using Code.ScriptableObjects;
+using Code.ViewScripts;
 
 namespace Code.ViewModels
 {
@@ -18,26 +19,20 @@ namespace Code.ViewModels
         public Observable<bool> IsP1Side = new Observable<bool>();
         public Observable<bool> Visibility = new Observable<bool>();
         
-        
         public ActorData ActorData; //I really don't like this but it's how we'll pass the data along for now
-
+        //This is because there is *no reason* a battle actor should have reference 
+        
         public PlayerPanelViewModel(IBattleActor actorContext, ActorData actorData, bool isP1Side)
         {
             _actorContext = actorContext;
             ActorData = actorData;
-            SetupFromBattleActor(_actorContext, actorData, isP1Side);
-        }
-
-        public void SetupFromBattleActor(IBattleActor actor, ActorData actorData,bool isP1Side)
-        {
-            CurrentHP.Value = actor.CurrentHP;
-            MaxHP.Value = actor.MaxHP;
-            IsGuarding.Value = actor.Guarded;
-            Name.Value = actor.Name;
+            CurrentHP.Value = actorContext.CurrentHP;
+            MaxHP.Value = actorContext.MaxHP;
+            IsGuarding.Value = actorContext.Guarded;
+            Name.Value = actorContext.Name;
             IsP1Side.Value = isP1Side;
-            ActorData = actorData;
         }
-
+        
         public void UpdateFromBattleActor()
         {
             CurrentHP.Value = Math.Max(0,_actorContext.CurrentHP);

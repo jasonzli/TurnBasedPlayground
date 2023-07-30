@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 namespace Code.DebugMenu
 {
+    /// <summary>
+    /// A view that displays the debug menu and sets up all the functionality
+    /// </summary>
     public class DebugView : ViewBase
     {
         [SerializeField] private Animator _animator;
@@ -22,6 +25,8 @@ namespace Code.DebugMenu
         [SerializeField] private Button ResetButton;
         [SerializeField] private Button CloseButton;
         [SerializeField] private Button OpenButton;
+        [SerializeField] private Button CloseGameButton;
+        [SerializeField] private Button ResetScreenSizeButton;
         [SerializeField] private Button UnsafeResetButton;
         [SerializeField] private EventTrigger OpenButtonTrigger;
         [SerializeField] private Button HealthAddButton;
@@ -45,28 +50,28 @@ namespace Code.DebugMenu
             _context = context;
             gameObject.SetActive(true);
 
+            //Clear existing listeners
+            ElementalButton.onClick.RemoveAllListeners();
+            SnakeButton.onClick.RemoveAllListeners();
+            CatButton.onClick.RemoveAllListeners();
+            ResetButton.onClick.RemoveAllListeners();
+            CloseButton.onClick.RemoveAllListeners();
+            CloseGameButton.onClick.RemoveAllListeners();
+            ResetScreenSizeButton.onClick.RemoveAllListeners();
+            
+            //Set initial values from context
             HealthValue = _context.HealthValue;
             HealPower = _context.HealPower;
             AttackPower = _context.AttackPower;
             
+            //Set up the listeners for the view model
             _context.HealthValue.PropertyChanged += UpdateHealthValue;
             _context.HealPower.PropertyChanged += UpdateHealPower;
             _context.AttackPower.PropertyChanged += UpdateAttackPower;
             _context.Visibility.PropertyChanged += SetVisibility;
             _context.ButtonVisibility.PropertyChanged += SetButtonVisibility;
 
-            ElementalButton.onClick.RemoveAllListeners();
-            SnakeButton.onClick.RemoveAllListeners();
-            CatButton.onClick.RemoveAllListeners();
-            ResetButton.onClick.RemoveAllListeners();
-            CloseButton.onClick.RemoveAllListeners();
-            
-            //I will fully admit to not previously knowing this was possible to do this.
-            OpenButtonTrigger.triggers[0].callback.RemoveAllListeners();
-            OpenButtonTrigger.triggers[1].callback.RemoveAllListeners();
-            OpenButtonTrigger.triggers[0].callback.AddListener((data) => { _context.SetButtonVisibility(true); });
-            OpenButtonTrigger.triggers[1].callback.AddListener((data) => { _context.SetButtonVisibility(false); });
-                
+            //Set up all button listeners
             ElementalButton.onClick.AddListener(() => { _context.SetToActorData(_elementalData);});
             SnakeButton.onClick.AddListener(() => { _context.SetToActorData(_snakeData);});
             CatButton.onClick.AddListener(() => { _context.SetToActorData(_catData);});
@@ -80,6 +85,12 @@ namespace Code.DebugMenu
             AttackPowerAddButton.onClick.AddListener(() => { _context.AddAttackPower();});
             AttackPowerSubtractButton.onClick.AddListener(() => { _context.SubtractAttackPower();});
             
+            //I will fully admit to not previously knowing this was possible to do this .triggers[index].callback reference. Unity!!!
+            OpenButtonTrigger.triggers[0].callback.RemoveAllListeners();
+            OpenButtonTrigger.triggers[1].callback.RemoveAllListeners();
+            OpenButtonTrigger.triggers[0].callback.AddListener((data) => { _context.SetButtonVisibility(true); });
+            OpenButtonTrigger.triggers[1].callback.AddListener((data) => { _context.SetButtonVisibility(false); });
+            
             ResetButton.onClick.AddListener(() =>
             {
                 _context.CloseDebugMenu();
@@ -91,8 +102,18 @@ namespace Code.DebugMenu
                 _context.TriggerResetWithDataUnsafe();
             });
             CloseButton.onClick.AddListener(() => { _context.CloseDebugMenu(); });
+            ResetScreenSizeButton.onClick.AddListener(() =>
+            {
+#if UNITY_ANDROID
+                Screen.SetResolution(1920,1080, true);
+#else
+                Screen.SetResolution(1920,1080, false);
+#endif
+            });
+            CloseGameButton.onClick.AddListener(() => { Application.Quit();});
             OpenButton.onClick.AddListener(() => { _context.OpenDebugMenu(); });
 
+            //Set initial visibility
             ResetTriggers();
             SetVisibility(_context.Visibility);
 

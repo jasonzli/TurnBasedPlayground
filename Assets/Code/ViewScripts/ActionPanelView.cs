@@ -4,7 +4,11 @@ using UnityEngine;
 
 namespace Code.ViewScripts
 {
-    //View for the action panel in the center of the screen
+    
+    /// <summary>
+    /// View for the action panel in the center of the screen
+    /// Does some text updating for the body and header
+    /// </summary>
     public class ActionPanelView : ViewBase
     {
         private ActionPanelViewModel _context;
@@ -23,7 +27,7 @@ namespace Code.ViewScripts
             _context.Visibility.PropertyChanged += SetVisibility;
             
             ResetTriggers();
-            SetVisibility(context.Visibility);
+            SetVisibility(_context.Visibility);
         }
         
         private void UpdateBody(string bodyText)
@@ -51,5 +55,6 @@ namespace Code.ViewScripts
             ResetTriggers();
             _animator.SetTrigger("Hide");
         }
+
     }
 }

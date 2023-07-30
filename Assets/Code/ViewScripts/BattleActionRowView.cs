@@ -5,7 +5,8 @@ using UnityEngine.UI;
 namespace Code.ViewScripts
 {
     /// <summary>
-    /// A dumb container for the UI objects of the row
+    /// A simple container for the UI objects of the row
+    /// Visibility is completely controlled by its parent, the BattleActionSelectionPanel
     /// </summary>
     public class BattleActionRowView : ViewBase
     {
@@ -17,16 +18,6 @@ namespace Code.ViewScripts
         {
             ActionNameText.text = actionData.ActionName.ToUpper();
             iconContainer.sprite = actionData.Icon;
-        }
-
-        public override void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public override void Hide()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

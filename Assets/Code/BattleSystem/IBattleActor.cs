@@ -2,6 +2,7 @@ namespace Code.BattleSystem
 {
     /// <summary>
     /// Essential data for BattleActors
+    /// Additional statuses could be added here
     /// </summary>
     public interface IBattleActor
     {

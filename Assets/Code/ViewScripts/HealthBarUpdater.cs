@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Code.ViewScripts
 {
+    /// <summary>
+    /// Not technically a view, but a control script purely for animation the health bar
+    /// </summary>
     public class HealthBarUpdater : MonoBehaviour
     {
         [SerializeField] private RectTransform _healthBarFill;

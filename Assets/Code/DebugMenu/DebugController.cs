@@ -23,5 +23,14 @@ namespace Code.DebugMenu
             _debugView.Initialize(_debugViewModel);
         }
 
+        public void Awake()
+        {
+            #if UNITY_ANDROID
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 90;
+            #endif
+        }
+        
+
     }
 }

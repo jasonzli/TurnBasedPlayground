@@ -24,17 +24,17 @@ namespace Code.ViewScripts
             ResetButton.onClick.RemoveAllListeners();
             TryAgainButton.onClick.RemoveAllListeners();
             
-            ResetButton.onClick.AddListener(() => { context.ResetFunction();});
-            TryAgainButton.onClick.AddListener(() => { context.TryAgainFunction();});
+            ResetButton.onClick.AddListener(() => { _context.ResetFunction();});
+            TryAgainButton.onClick.AddListener(() => { _context.TryAgainFunction();});
             
             //Set visibility automation
             ResetButton.onClick.AddListener(() =>
             {
-                SetVisibility(false);
+                _context.SetVisibility(false);
             });
             TryAgainButton.onClick.AddListener(() =>
             {
-                SetVisibility(false);
+                _context.SetVisibility(false);
             });
         }
         
@@ -43,14 +43,5 @@ namespace Code.ViewScripts
             _errorMessage.text = message;
         }
         
-        public override void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public override void Hide()
-        {
-            gameObject.SetActive(false);
-        }
     }
 }

@@ -3,7 +3,8 @@ using System;
 namespace Code.BattleSystem
 {   
     /// <summary>
-    /// Represents a single action in a battle.
+    /// Represents a single action in a battle. This serves are the full base for what we expect
+    /// an action to do to a target from a source
     /// </summary>
     [Serializable]
     public struct BattleActionParameters

@@ -10,10 +10,10 @@ using UnityEngine;
 namespace Code.BattleSystem
 {
     /// <summary>
-    /// This conductor serves as the gobetween and home for everything
+    /// This conductor serves as the go-between and home for everything
     /// It is the home to the battle system
     /// It is the home to to UI references
-    /// And home to ViewModels, but is only responsible for hooking up the VMs with the Vs
+    /// And home to ViewModels, and is responsible for hooking up the VMs with the Vs
     ///
     /// All the view behavior could be offloaded onto a UI manager of sorts but for now it's here. It's all here.
     /// </summary>

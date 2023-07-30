@@ -4,7 +4,11 @@ using UnityEngine.UI;
 
 namespace Code.ViewScripts
 {
-    [RequireComponent(typeof(Animator))]
+    /// <summary>
+    /// The view class for the battle actor data UI
+    /// Configures the UI based on all the data in the viewmodel
+    /// This engages in maybe more logic than it should, but it keeps all the complexity here rather than spread around
+    /// </summary>
     public class BattleActorUIView : ViewBase
     {
         private enum PanelUIState
@@ -49,9 +53,9 @@ namespace Code.ViewScripts
             IsGuarding = context.IsGuarding;
             IsPlayerOne = context.IsP1Side;
 
-            SetupToken();
-            DeterminePanelUIState(IsGuarding);
+            _panelUIState = DeterminePanelUIState(IsGuarding);
             SetUpUIPanelBasedOnStatus();
+            SetupToken();
         
             UpdateCurrentHP(CurrentHP);
             context.CurrentHP.PropertyChanged += UpdateCurrentHP;
@@ -76,18 +80,23 @@ namespace Code.ViewScripts
             }
         }
 
-        private void DeterminePanelUIState(bool isGuarding)
+        private PanelUIState DeterminePanelUIState(bool isGuarding)
         {
-            _panelUIState = isGuarding ? PanelUIState.GUARDING : PanelUIState.STANDARD;
+            return isGuarding ? PanelUIState.GUARDING : PanelUIState.STANDARD;
         }
 
         public void UpdatePlayerUIStatus(bool isGuarding)
         {
             IsGuarding = isGuarding;
-            DeterminePanelUIState(IsGuarding);
+            _panelUIState = DeterminePanelUIState(IsGuarding);
             SetUpUIPanelBasedOnStatus();
         }
 
+        /// <summary>
+        /// Determine the UI panel's view state based on the guarding status
+        ///
+        /// There might be other states later, so we'll leave it hacky like this
+        /// </summary>
         private void SetUpUIPanelBasedOnStatus()
         {
             switch (_panelUIState)
@@ -123,6 +132,7 @@ namespace Code.ViewScripts
             _animator.ResetTrigger("Show");
             _animator.ResetTrigger("Hide");
         }
+
         public override void Show()
         {
             ResetTriggers();

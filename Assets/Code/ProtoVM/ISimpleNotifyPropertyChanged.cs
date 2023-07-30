@@ -1,3 +1,5 @@
+using System;
+
 namespace Code.ProtoVM
 {
     
@@ -7,6 +9,11 @@ namespace Code.ProtoVM
      *
      * I'm not sure if this is the best way to do it, but this, for me, is the start: a observable value that can report
      * changes down a chain. Next would be the associated services to build and manage the various dependencies that exist
+     *
+     * The big trade off of not using that form of it is that I cannot use the IView interface to create a standard
+     * contract for making a view class. That is not to be ignored because it makes it hard to *enforce*
+     *
+     * Anyway, food for thought.
      *
      * To me, there remains a big question what "the model" is really meant to be in Unity's case. 
      * 
@@ -22,9 +29,6 @@ namespace Code.ProtoVM
      */
     public interface ISimpleNotifyPropertyChanged
     {
-        /// <summary>
-        /// The Action only version of the INotifyPropertyChanged interface, which normally has a PropertyChangedEventHandler(object? sender, PropertyChangedEventArgs e)
-        /// </summary>
         public delegate void PropertyChanged();
 
     }

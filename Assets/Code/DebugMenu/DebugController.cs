@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Code.DebugMenu
 {
+    /// <summary>
+    /// Monobehavior layer for setting up the debug menu.
+    /// Has a dependency on needing to have a conductor to actually reference.
+    /// </summary>
     public class DebugController : MonoBehaviour
     {
         private DebugViewModel _debugViewModel;

@@ -36,6 +36,11 @@ namespace Code.BattleSystem
             return new BattleActor(actorData.Name,actorData.Health, false);
         }
         
+        /// <summary>
+        /// If you have zero health, you lose the battle.
+        /// No ties, no draws, no mercy.
+        /// </summary>
+        /// <returns>Winning BattleActor</returns>
         public IBattleActor EvaluateWinner()
         {
             if (PlayerOne.CurrentHP <= 0)

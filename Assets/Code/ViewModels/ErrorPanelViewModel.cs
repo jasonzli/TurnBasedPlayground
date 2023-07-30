@@ -16,11 +16,6 @@ namespace Code.ViewModels
 
         public ErrorPanelViewModel(Action resetFunction, Action tryAgainFunction)
         {
-            Initialize(resetFunction, tryAgainFunction);
-        }
-
-        public void Initialize(Action resetFunction, Action tryAgainFunction)
-        {
             Visibility.Value = false;
             ResetFunction = resetFunction;
             TryAgainFunction = tryAgainFunction;

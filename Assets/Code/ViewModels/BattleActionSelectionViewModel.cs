@@ -28,20 +28,14 @@ namespace Code.ViewModels
         
         public Action<IBattleAction> OnActionSelected;
         
+        /// <summary>
+        /// This is the function that sends to the battle system that an action has been selected
+        /// Creates the battle action to execute from the parameters
+        /// </summary>
+        /// <param name="actionData">The set action data from the action panel</param>
+        /// <remarks> Imagine a world where parameters can be modified and updated, that's why we're creating them here</remarks>
         public void SendBattleActionData(BattleActionData actionData)
         {
-            //A hack to make sure our heals and everything work correctly
-            //Originally we could use this to make it so we could "aim" the attacks, left for posterity
-            // IBattleActor tempTarget = Target;
-            // if (actionData.DoesApplyGuard)
-            // {
-            //     tempTarget = Source;
-            // }
-            //
-            // if (actionData.HealAmount > 0)
-            // {
-            //     tempTarget = Source;
-            // }
             BattleAction newAction = new BattleAction (actionData.AsBattleActionParameters() , Source, Target);
             OnActionSelected?.Invoke(newAction);
         }

@@ -6,6 +6,10 @@ using Code.ViewModels;
 
 namespace Code.DebugMenu
 {
+    /// <summary>
+    /// The actual behaviors for the debugging menu (mostly). THere's some behaviors coded up on the higher level (like
+    /// Unity screen and Quit functionality). Here is the values we're going to set and manipulate on the conductor
+    /// </summary>
     public class DebugViewModel : IViewModel
     {
 

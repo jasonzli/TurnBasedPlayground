@@ -6,8 +6,7 @@ namespace Code.BattleSystem
     /// <summary>
     /// BattleActions are created from parameters and executed on a target from a source
     /// They are fully constructed from BattleActionParameters, and apply all values from those parameters
-    ///
-    /// Visual display is left up to another layer
+    /// using the base's constraints for how to apply damage, healing, and guard
     /// /// </summary>
     public class BattleAction : BattleActionBase
     {
@@ -18,15 +17,7 @@ namespace Code.BattleSystem
             Source = source;
             Target = target;
         }
-
-        public BattleAction()
-        {
-            BattleActionParameters parameters = new BattleActionParameters();
-            Parameters = parameters;
-            Source = null;
-            Target = null;
-        }
-
+        
         public override bool Execute()
         {
             //if Parameters deal damage, apply damage!

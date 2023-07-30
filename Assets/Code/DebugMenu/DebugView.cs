@@ -102,7 +102,14 @@ namespace Code.DebugMenu
                 _context.TriggerResetWithDataUnsafe();
             });
             CloseButton.onClick.AddListener(() => { _context.CloseDebugMenu(); });
-            ResetScreenSizeButton.onClick.AddListener(() => { Screen.SetResolution(1920,1080, false); });
+            ResetScreenSizeButton.onClick.AddListener(() =>
+            {
+#if UNITY_ANDROID
+                Screen.SetResolution(1920,1080, true);
+#else
+                Screen.SetResolution(1920,1080, false);
+#endif
+            });
             CloseGameButton.onClick.AddListener(() => { Application.Quit();});
             OpenButton.onClick.AddListener(() => { _context.OpenDebugMenu(); });
 

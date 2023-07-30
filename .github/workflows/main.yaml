@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          path: ${{matrix.targetPlatform}}.tar
 
   # DeployToOutputs:
   #   needs: buildForPlatforms

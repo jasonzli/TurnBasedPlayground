@@ -84,21 +84,9 @@ namespace Code.BattleSystem
             _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, _playerData,true);
             _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, _enemyData,false);
 
-            _playerOneTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerTwoTokenView.transform);
-            _playerTwoTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerOneTokenView.transform);
-            
-            //Setup the action data dictionary /* this is so clearly a hack*/ 
-            _playerBattleActionDictionary.Clear();
-            _playerBattleActionDictionary.Add(_playerData.AttackActionData.ActionName, _playerData.AttackActionData);
-            _playerBattleActionDictionary.Add(_playerData.HealActionData.ActionName, _playerData.HealActionData);
-            _playerBattleActionDictionary.Add(_playerData.GuardActionData.ActionName, _playerData.GuardActionData);
-            
-            _enemyBattleActionDictionary.Clear();
-            _enemyBattleActionDictionary.Add("Ink Blink", _enemyData.GuardActionData);
-            _enemyBattleActionDictionary.Add("Hug", _enemyData.AttackActionData);
-            _enemyBattleActionDictionary.Add("Self Love", _enemyData.HealActionData);
-            _enemyBattleActionDictionary.Add("Sneak Beak", _enemyData.HealActionData);
-            
+            _playerOneTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerTwoTokenView.transform,_battleSystem.PlayerOne);
+            _playerTwoTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerOneTokenView.transform,_battleSystem.PlayerTwo);
+
             List<BattleActionData> playerOneActions = new List<BattleActionData>()
                 { _playerData.AttackActionData, _playerData.HealActionData, _playerData.GuardActionData };
             _playerBattleActionViewModel = new BattleActionSelectionViewModel(playerOneActions, _battleSystem.PlayerOne,
@@ -163,10 +151,10 @@ namespace Code.BattleSystem
             
             //Perform the visual effects phase
             await ExecuteVisualEffects(action);
+            await Task.Delay(700);
 
             _battleSystem.PerformAction(action);
             UpdatePlayerViewModels();
-            await Task.Delay(200);
             
 
             //Increment turn
@@ -186,7 +174,7 @@ namespace Code.BattleSystem
                     _playerOneTokenViewModel.Knockdown();
                 }
                 //visual task delay to see victory condition
-                await Task.Delay(700);
+                await Task.Delay(1600);
                 BattleOver(winner);
                 return;
             }
@@ -311,6 +299,8 @@ namespace Code.BattleSystem
         {
             _playerOnePanelViewModel.UpdateFromBattleActor();
             _playerTwoPanelViewModel.UpdateFromBattleActor();
+            _playerOneTokenViewModel.UpdateFromBattleActor();
+            _playerTwoTokenViewModel.UpdateFromBattleActor();
         }
         
         // Needs multiple show and hide controls from here
@@ -416,47 +406,45 @@ namespace Code.BattleSystem
         /// <param name="action">the action to perform</param>
         private async Task ExecuteVisualEffects(IBattleAction action)
         {
-            //so from the action, let's figure out who should be doing the attacking and who should be blocking
-            //this is the most hacky part now
-            
             //Because we have the action, we can compare against the battle system to determine who is attacking and defending
-            bool isPlayerOneAttacking = action.Source == _battleSystem.PlayerOne;\
-
+            bool isPlayerOneAttacking = action.Source == _battleSystem.PlayerOne;
+            PlayerTokenViewModel attacker = isPlayerOneAttacking ? _playerOneTokenViewModel : _playerTwoTokenViewModel;
+            
+            BattleActionType actionType = BattleActionType.None;
+            
+            //determine if it's an attacking type or not
             if (isPlayerOneAttacking)
             {
-                _playerOneTokenViewModel.PerformActionAnimation(action.Parameters.BattleActionType);
-                await Task.Delay(720);
-                _playerTwoTokenViewModel.Wounded();
+                actionType = action.Parameters.BattleActionType;
             }
             else
             {
-                //We'll just assign one of them based on the name
-                BattleActionType actionType = BattleActionType.Attack;
                 switch (action.Parameters.MoveName)
                 {
                     case "Ink Blink":
                         actionType = BattleActionType.Guard;
-                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
                         break;
                     case "Sneak Beak":
                         actionType = BattleActionType.Guard;
-                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
-                        await Task.Delay(700);
-                        _playerOneTokenViewModel.Wounded();
                         break;
                     case "Hug":
                         actionType = BattleActionType.Attack;
-                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
-                        await Task.Delay(700);
-                        _playerOneTokenViewModel.Wounded();
                         break;
                     case "Self Love":
                         actionType = BattleActionType.Heal;
-                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
                         break;
                 }
             }
-            
+
+            //Attack fails to do damage, get out now.
+            if (actionType == BattleActionType.Attack && action.Target.Guarded)
+            {
+                attacker.PerformFailureAnimation();
+                return;
+            }
+
+            attacker.PerformActionAnimation(actionType); //Do attack, guard, or heal
+
         }
         #endregion
         

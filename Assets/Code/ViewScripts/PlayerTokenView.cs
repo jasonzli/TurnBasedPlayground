@@ -42,6 +42,7 @@ public class PlayerTokenView : ViewBase
         _context.OnAttack += Attack;
         _context.OnHeal += Heal;
         _context.OnKnockdown += Knockdown;
+        _context.OnFailure += Failure;
 
         ResetPivotTriggers();
         ResetLocalTriggers();
@@ -83,6 +84,13 @@ public class PlayerTokenView : ViewBase
         _localTokenAnimator.ResetTrigger("Attack");
         _localTokenAnimator.ResetTrigger("Heal");
         _localTokenAnimator.ResetTrigger("Knockdown");
+        _localTokenAnimator.ResetTrigger("Failure");
+    }
+
+    public void Failure()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Failure");
     }
     
     public void Wounded()

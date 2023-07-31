@@ -12,6 +12,7 @@ namespace Code.ViewModels
         public Transform CameraTransform;
         public Transform TargetTransform;
         public Observable<bool> Visibility = new Observable<bool>();
+        public Observable<int> CurrentHP = new Observable<int>();
 
         public Action OnLookAtTarget;
         public Action OnLookAtCamera;
@@ -20,15 +21,30 @@ namespace Code.ViewModels
         public Action OnAttack;
         public Action OnHeal;
         public Action OnKnockdown;
+        public Action OnFailure;
+        
+        private IBattleActor _actorContext;
         
         public PlayerTokenViewModel(
             Transform cameraTransform, 
-            Transform targetTransform)
+            Transform targetTransform,
+            IBattleActor actorContext)
         {
             CameraTransform = cameraTransform;
             TargetTransform = targetTransform;
+            _actorContext = actorContext;
+            
+            CurrentHP.Value = actorContext.CurrentHP;
         }
         
+        public void UpdateFromBattleActor()
+        {
+            if (_actorContext.CurrentHP < CurrentHP.Value)
+            {
+                Wounded();
+            }
+            CurrentHP.Value = _actorContext.CurrentHP;
+        }
         public void PerformActionAnimation(BattleActionType actionType)
         {
             switch (actionType)
@@ -46,6 +62,10 @@ namespace Code.ViewModels
             
         }
 
+        public void PerformFailureAnimation()
+        {
+            OnFailure?.Invoke();
+        }
         public void LookAtTarget()
         {
             OnLookAtTarget?.Invoke();

@@ -4,6 +4,30 @@
 
 This project explores the use of a work-in-progress MVVM-like framework for creating a unity project. I have written a stackoverflow inspired version for purely observable values. Here this framework relies on a primary Battle Conductor which coordinates and sets up all the simulation, viewmodels, and initializes the views. This is not a fully traditional implementation of the MVVM, just one approach since I haven't had an opportunity to fully try and build one up before. A lot of this is mine but the ideas come from a lot of different stack overflow threads and these talks https://www.youtube.com/watch?v=dgaCPnWadEo and this one https://medium.com/etermax-technology/embracing-changes-with-mvvm-14fcf6d35468
 
+## Making New Characters
+
+To create a new character you need to create a new ScriptableObject Actor Data along with a set of three Scriptable Object BattleActionData.
+
+ActorData needs
+* Sprite for Token Icon
+* HighResolution (512x512) texture for the token mesh
+* string Name
+* int Max Health
+* 3 Battle Action Data
+
+BattleActionData needs
+* string MoveName
+* enum BattleActionType (attack, guard, or heal)
+* int HPDamage (negative works in unsafe mode only)
+* int HealAmount (negative works in unsafe mode only)
+* bool DoesApplyGuard
+* sprite Icon for displaying the action in the panel
+
+Note: a few unused things in the ActorData: URLBrain and URL, these are for the enemy actor Prowler only (a fun exercise might be to make this fully automatic or let any action fetch)
+
+These can be configured and then the BattleConductor can be set with the actor data for the player one or player two slot. This will update the battle scene
+
+
 ## How to extend
 
 The way this framework works is the following:

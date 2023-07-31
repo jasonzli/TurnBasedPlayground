@@ -58,11 +58,17 @@ namespace Code.BattleSystem
             return null;
         }
         
-        public void PerformAction(IBattleAction action)
+        public bool PerformAction(IBattleAction action)
         {
-            action.Execute();
+            bool actionSuccessful = action.Execute();
             ActionsTaken.Add(action);
+            
+            if (!actionSuccessful)
+            {
+                return false;
+            }
             Winner = EvaluateWinner();
+            return true;
         }
         
         

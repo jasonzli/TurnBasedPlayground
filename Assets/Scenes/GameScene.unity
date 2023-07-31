@@ -1624,6 +1624,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 262774063}
     m_Modifications:
+    - target: {fileID: 7132345852548502120, guid: 4a5b090f3c3624c87adbc967dac3c3ca, type: 3}
+      propertyPath: m_TranslationAtRest.x
+      value: -0.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132345852548502120, guid: 4a5b090f3c3624c87adbc967dac3c3ca, type: 3}
+      propertyPath: m_TranslationAtRest.z
+      value: -7.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132345852548502120, guid: 4a5b090f3c3624c87adbc967dac3c3ca, type: 3}
+      propertyPath: m_TranslationOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132345852548502120, guid: 4a5b090f3c3624c87adbc967dac3c3ca, type: 3}
+      propertyPath: m_TranslationOffset.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8311623786721952149, guid: 4a5b090f3c3624c87adbc967dac3c3ca, type: 3}
       propertyPath: m_Name
       value: PlayerOneStub

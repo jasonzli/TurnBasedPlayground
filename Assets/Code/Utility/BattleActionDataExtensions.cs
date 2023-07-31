@@ -24,6 +24,7 @@ namespace Code.Utility
                 hpDamage = data.HPDamage,
                 healAmount = data.HealAmount,
                 doesApplyGuard = data.DoesApplyGuard,
+                battleActionType = data.BattleActionType
             };
 
         }
@@ -36,6 +37,7 @@ namespace Code.Utility
                 hpDamage = Math.Max(0,data.HPDamage),
                 healAmount = Math.Max(0,data.HealAmount),
                 doesApplyGuard = data.DoesApplyGuard,
+                battleActionType = data.BattleActionType
             };
         }
     }

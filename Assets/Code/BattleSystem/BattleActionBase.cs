@@ -16,25 +16,28 @@ namespace Code.BattleSystem
         public abstract bool Execute();
         
         // Some "essential" functions that should be consistent across any kind of battle action
-        protected void ApplyHPDamage(IBattleActor target)
+        protected bool ApplyHPDamage(IBattleActor target)
         {
             //If they're guarded remove their guard and leave it at that
             if (target.Guarded)
             {
                 target.Guarded = false;
-                return;
+                return false;
             }
             target.CurrentHP = Math.Max(0, target.CurrentHP - Parameters.hpDamage);
+            return true;
         }
         
-        protected void ApplyHeal(IBattleActor target)
+        protected bool ApplyHeal(IBattleActor target)
         {
             target.CurrentHP = Math.Min(target.MaxHP, target.CurrentHP + Parameters.healAmount);
+            return true;
         }
         
-        protected void ApplyGuard(IBattleActor target)
+        protected bool ApplyGuard(IBattleActor target)
         {
             target.Guarded = Parameters.doesApplyGuard;
+            return true;
         }
     }
 }

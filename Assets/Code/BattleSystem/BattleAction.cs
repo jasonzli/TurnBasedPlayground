@@ -25,7 +25,7 @@ namespace Code.BattleSystem
             {
                 ApplyHPDamage(Target);
             }
-
+            
             //If Parameters heal, apply health!
             if (Parameters.healAmount > 0)
             {

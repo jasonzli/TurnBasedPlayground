@@ -1,4 +1,5 @@
 using System;
+using Code.BattleSystem;
 using Code.ProtoVM;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,6 +15,11 @@ namespace Code.ViewModels
 
         public Action OnLookAtTarget;
         public Action OnLookAtCamera;
+        public Action OnWounded;
+        public Action OnGuarded;
+        public Action OnAttack;
+        public Action OnHeal;
+        public Action OnKnockdown;
         
         public PlayerTokenViewModel(
             Transform cameraTransform, 
@@ -23,6 +29,23 @@ namespace Code.ViewModels
             TargetTransform = targetTransform;
         }
         
+        public void PerformActionAnimation(BattleActionType actionType)
+        {
+            switch (actionType)
+            {
+                case BattleActionType.Attack:
+                    Attack();
+                    break;
+                case BattleActionType.Guard:
+                    Guarded();
+                    break;
+                case BattleActionType.Heal:
+                    Heal();
+                    break;
+            }
+            
+        }
+
         public void LookAtTarget()
         {
             OnLookAtTarget?.Invoke();
@@ -31,6 +54,31 @@ namespace Code.ViewModels
         public void LookAtCamera()
         {
             OnLookAtCamera?.Invoke();
+        }
+        
+        public void Wounded()
+        {
+            OnWounded?.Invoke();
+        }
+        
+        public void Guarded()
+        {
+            OnGuarded?.Invoke();
+        }
+        
+        public void Attack()
+        {
+            OnAttack?.Invoke();
+        }
+        
+        public void Heal()
+        {
+            OnHeal?.Invoke();
+        }
+        
+        public void Knockdown()
+        {
+            OnKnockdown?.Invoke();
         }
         
         public void SetVisibility(bool visibility)

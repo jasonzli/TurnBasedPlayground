@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468c902ae5b34cf8900d1a0c504b6104, type: 3}
   m_Name: CatGuardActionData
   m_EditorClassIdentifier: 
+  BattleActionType: 3
   ActionName: Guard
   HPDamage: 0
   HealAmount: 0

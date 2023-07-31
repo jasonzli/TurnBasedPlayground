@@ -35,8 +35,17 @@ public class PlayerTokenView : ViewBase
 
         _context.OnLookAtTarget += LookAtTarget;
         _context.OnLookAtCamera += LookAtCamera;
+        
+        //Send all this to the lower controller
+        _context.OnWounded += Wounded;
+        _context.OnGuarded += Guarded;
+        _context.OnAttack += Attack;
+        _context.OnHeal += Heal;
+        _context.OnKnockdown += Knockdown;
 
-        ResetTriggers();
+        ResetPivotTriggers();
+        ResetLocalTriggers();
+        _localTokenAnimator.Play("Idle");
     }
     
     public void OverrideLocalAnimator(AnimatorOverrideController overrideController)
@@ -49,21 +58,60 @@ public class PlayerTokenView : ViewBase
         _sceneMovementAnimator.runtimeAnimatorController = overrideController;
     }
 
-    public void ResetTriggers()
+    public void ResetPivotTriggers()
     {
         _sceneMovementAnimator.ResetTrigger("LookAtTarget");
         _sceneMovementAnimator.ResetTrigger("LookAtCamera");
     }
-    
+
     public void LookAtTarget()
     {
-        ResetTriggers();
+        ResetPivotTriggers();
         _sceneMovementAnimator.SetTrigger("LookAtTarget");
     }
     
     public void LookAtCamera()
     {
-        ResetTriggers();
+        ResetPivotTriggers();
         _sceneMovementAnimator.SetTrigger("LookAtCamera");
+    }
+
+    public void ResetLocalTriggers()
+    {
+        _localTokenAnimator.ResetTrigger("Wound");
+        _localTokenAnimator.ResetTrigger("Guard");
+        _localTokenAnimator.ResetTrigger("Attack");
+        _localTokenAnimator.ResetTrigger("Heal");
+        _localTokenAnimator.ResetTrigger("Knockdown");
+    }
+    
+    public void Wounded()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Wound");
+    }
+    
+    public void Guarded()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Guard");
+    }
+    
+    public void Attack()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Attack");
+    }
+    
+    public void Heal()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Heal");
+    }
+    
+    public void Knockdown()
+    {
+        ResetLocalTriggers();
+        _localTokenAnimator.SetTrigger("Knockdown");
     }
 }

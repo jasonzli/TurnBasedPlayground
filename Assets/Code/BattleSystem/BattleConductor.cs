@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Code.ScriptableObjects;
 using Code.Utility;
 using Code.ViewModels;
 using Code.ViewScripts;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Code.BattleSystem
 {
@@ -133,7 +135,7 @@ namespace Code.BattleSystem
             turnIndex = 0;
 
             //Set up the event to alert the battle system
-            _playerBattleActionViewModel.OnActionSelected += SetAction;
+            _playerBattleActionViewModel.OnActionSelected += (action) => { SetAction(action);};
 
             //Set beginning
             HideAllUI();
@@ -141,29 +143,30 @@ namespace Code.BattleSystem
         }
 
         #region Battle Controls
-        
-        
+
         /// <summary>
         /// A stateless-ish (turn order is checked) battle control "system" that is run from the UI
         /// the game doesn't have an awareness
-        /// 
+        ///
+        /// This method has ballooned now that I need to handle VFX
         /// </summary>
         /// <param name="action">The battleaction to execute this "turn"</param>
-        private async void SetAction(IBattleAction action)
+        private async Task SetAction(IBattleAction action)
         {
+            //Player One needs to look at the Target
             _playerOneTokenViewModel.LookAtTarget();
             
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
-            await Task.Delay(1300);
+            await Task.Delay(1500);
+            HideActionPanel(); //hide the action panel;
             
             //Perform the visual effects phase
-            
+            await ExecuteVisualEffects(action);
 
-            _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
+            _battleSystem.PerformAction(action);
             UpdatePlayerViewModels();
             await Task.Delay(200);
-            HideActionPanel(); //hide the action panel;
             
 
             //Increment turn
@@ -173,9 +176,17 @@ namespace Code.BattleSystem
             IBattleActor winner = _battleSystem.EvaluateWinner();
             if (winner != null)
             {
+                bool isPlayerOneWinner = winner.Name == _battleSystem.PlayerOne.Name;
+                if (isPlayerOneWinner)
+                {
+                    _playerTwoTokenViewModel.Knockdown();
+                }
+                else
+                {
+                    _playerOneTokenViewModel.Knockdown();
+                }
                 //visual task delay to see victory condition
-                await Task.Delay(1400);
-
+                await Task.Delay(700);
                 BattleOver(winner);
                 return;
             }
@@ -268,6 +279,8 @@ namespace Code.BattleSystem
             }
         }
 
+
+
         #endregion
 
 
@@ -283,7 +296,7 @@ namespace Code.BattleSystem
             //Setup the battle panels
             _battleOverlayPanelViewModel.SetVisibility(false);
             
-            await Task.Delay(1000); // Pause it
+            await Task.Delay(1500); // Pause it
             
             ShowBattleActorDataPanels();
             ShowPlayerBattleActionPanel();
@@ -397,8 +410,52 @@ namespace Code.BattleSystem
         
         #region Player Token control
 
-        private void SetTokensToIdle()
+        /// <summary>
+        /// Extremely hacky. In a better world this would be obtained from the action *data* and not the action itself
+        /// </summary>
+        /// <param name="action">the action to perform</param>
+        private async Task ExecuteVisualEffects(IBattleAction action)
         {
+            //so from the action, let's figure out who should be doing the attacking and who should be blocking
+            //this is the most hacky part now
+            
+            //Because we have the action, we can compare against the battle system to determine who is attacking and defending
+            bool isPlayerOneAttacking = action.Source == _battleSystem.PlayerOne;\
+
+            if (isPlayerOneAttacking)
+            {
+                _playerOneTokenViewModel.PerformActionAnimation(action.Parameters.BattleActionType);
+                await Task.Delay(720);
+                _playerTwoTokenViewModel.Wounded();
+            }
+            else
+            {
+                //We'll just assign one of them based on the name
+                BattleActionType actionType = BattleActionType.Attack;
+                switch (action.Parameters.MoveName)
+                {
+                    case "Ink Blink":
+                        actionType = BattleActionType.Guard;
+                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
+                        break;
+                    case "Sneak Beak":
+                        actionType = BattleActionType.Guard;
+                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
+                        await Task.Delay(700);
+                        _playerOneTokenViewModel.Wounded();
+                        break;
+                    case "Hug":
+                        actionType = BattleActionType.Attack;
+                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
+                        await Task.Delay(700);
+                        _playerOneTokenViewModel.Wounded();
+                        break;
+                    case "Self Love":
+                        actionType = BattleActionType.Heal;
+                        _playerTwoTokenViewModel.PerformActionAnimation(actionType);
+                        break;
+                }
+            }
             
         }
         #endregion

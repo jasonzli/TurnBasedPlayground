@@ -66,6 +66,7 @@ namespace Code.DebugMenu
             destination.HealAmount = source.HealAmount;
             destination.DoesApplyGuard = source.DoesApplyGuard;
             destination.ActionName = source.ActionName;
+            destination.BattleActionType = source.BattleActionType;
         }
         
 

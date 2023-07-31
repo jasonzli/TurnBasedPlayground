@@ -17,6 +17,7 @@ public class StatusContentContainer : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         ResetTriggers();
+        
         //Clear Event triggers
         //At this point, by convention, 0 is enter, 1 is exit
         _tooltipEventTrigger.triggers[0].callback.RemoveAllListeners();

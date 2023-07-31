@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5142503165827474191}
   - component: {fileID: 6391877015226779680}
   m_Layer: 0
-  m_Name: Actor
+  m_Name: ActorWorldToken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8842438852497341075}
-  m_LocalRotation: {x: 0, y: 0.9991697, z: -0, w: -0.040742014}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -64,7 +64,7 @@ Transform:
   - {fileID: 7007961000214467046}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 184.67, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6391877015226779680
 Animator:
   serializedVersion: 4

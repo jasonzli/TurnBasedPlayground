@@ -13,6 +13,7 @@ namespace Code.BattleSystem
         public int hpDamage;
         public int healAmount;
         public bool doesApplyGuard;
+        public BattleActionType battleActionType;
     
         public string MoveName
         {
@@ -37,13 +38,27 @@ namespace Code.BattleSystem
             get => doesApplyGuard;
             set => doesApplyGuard = value;
         }
-
-        public BattleActionParameters(string moveName, int damage, int healAmount, bool applyGuard) : this()
+        
+        public BattleActionType BattleActionType
+        {
+            get => battleActionType;
+            set => battleActionType = value;
+        }
+        public BattleActionParameters(string moveName, int damage, int healAmount, bool applyGuard, BattleActionType actionType) : this()
         {
             MoveName = moveName;
             Damage = damage;
             HealAmount = healAmount;
             ApplyGuard = applyGuard;
+            BattleActionType = actionType;
         }
+    }
+
+    public enum BattleActionType
+    {
+        None,
+        Attack,
+        Heal,
+        Guard
     }
 }

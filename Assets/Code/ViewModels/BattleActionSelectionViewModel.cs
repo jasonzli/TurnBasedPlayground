@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Code.BattleSystem;
 using Code.ProtoVM;
 using Code.ScriptableObjects;
@@ -29,7 +30,7 @@ namespace Code.ViewModels
             Target = target;
             UnsafeBattle.Value = unsafeBattle;
         }
-        
+
         public Action<IBattleAction> OnActionSelected;
         
         /// <summary>

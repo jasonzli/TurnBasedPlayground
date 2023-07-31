@@ -40,11 +40,17 @@ namespace Code.BattleSystem
         [SerializeField] private BattleActionSelectionPanelView _playerBattleActionSelectionPanelView;
         [SerializeField] private ActionPanelView _actionPanelView;
         [SerializeField] private ErrorPanelView _errorPanelView;
+        
+        //Transforms for the player tokens
+        [SerializeField] private PlayerTokenView _playerOneTokenView;
+        [SerializeField] private PlayerTokenView _playerTwoTokenView;
 
         //ViewModels for the system and actions
         private BattleSystem _battleSystem;
         private PlayerPanelViewModel _playerOnePanelViewModel;
         private PlayerPanelViewModel _playerTwoPanelViewModel;
+        private PlayerTokenViewModel _playerOneTokenViewModel;
+        private PlayerTokenViewModel _playerTwoTokenViewModel;
         private BattleOverlayPanelViewModel _playerWinViewModel;
         private BattleOverlayPanelViewModel _enemyWinViewModel;
         private BattleActionSelectionViewModel _playerBattleActionViewModel;
@@ -54,6 +60,8 @@ namespace Code.BattleSystem
 
         //Internal  data for battle
         private List<IBattleActor> _turnOrder = new List<IBattleActor>();
+        private Dictionary<string,BattleActionData> _playerBattleActionDictionary = new Dictionary<string, BattleActionData>();
+        private Dictionary<string,BattleActionData> _enemyBattleActionDictionary = new Dictionary<string, BattleActionData>();
         private int turnIndex = 0;
 
         [Header("Player Material for Debug Purposes")]
@@ -73,6 +81,21 @@ namespace Code.BattleSystem
             //Setup viewmodels with context
             _playerOnePanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerOne, _playerData,true);
             _playerTwoPanelViewModel = new PlayerPanelViewModel(_battleSystem.PlayerTwo, _enemyData,false);
+
+            _playerOneTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerTwoTokenView.transform);
+            _playerTwoTokenViewModel = new PlayerTokenViewModel(Camera.main.transform, _playerOneTokenView.transform);
+            
+            //Setup the action data dictionary /* this is so clearly a hack*/ 
+            _playerBattleActionDictionary.Clear();
+            _playerBattleActionDictionary.Add(_playerData.AttackActionData.ActionName, _playerData.AttackActionData);
+            _playerBattleActionDictionary.Add(_playerData.HealActionData.ActionName, _playerData.HealActionData);
+            _playerBattleActionDictionary.Add(_playerData.GuardActionData.ActionName, _playerData.GuardActionData);
+            
+            _enemyBattleActionDictionary.Clear();
+            _enemyBattleActionDictionary.Add("Ink Blink", _enemyData.GuardActionData);
+            _enemyBattleActionDictionary.Add("Hug", _enemyData.AttackActionData);
+            _enemyBattleActionDictionary.Add("Self Love", _enemyData.HealActionData);
+            _enemyBattleActionDictionary.Add("Sneak Beak", _enemyData.HealActionData);
             
             List<BattleActionData> playerOneActions = new List<BattleActionData>()
                 { _playerData.AttackActionData, _playerData.HealActionData, _playerData.GuardActionData };
@@ -92,7 +115,7 @@ namespace Code.BattleSystem
 
             //Initialize views
             _playerPanel.Initialize(_playerOnePanelViewModel);
-            UpdatePlayerMaterial(); // just for material setting
+            UpdatePlayerTokenWorldMaterial(); // just for material setting because we are changing a material instance
             _enemyPanel.Initialize(_playerTwoPanelViewModel);
             _playerBattleActionSelectionPanelView.Initialize(_playerBattleActionViewModel);
             _battleBeginsOverlayPanelUIView.Initialize(_battleOverlayPanelViewModel);
@@ -100,6 +123,8 @@ namespace Code.BattleSystem
             _errorPanelView.Initialize(_errorPanelViewModel);
             _playerWinView.Initialize(_playerWinViewModel);
             _enemyWinView.Initialize(_enemyWinViewModel);
+            _playerOneTokenView.Initialize(_playerOneTokenViewModel);
+            _playerTwoTokenView.Initialize(_playerTwoTokenViewModel);
 
             // Set internal data
             _turnOrder = new List<IBattleActor>();
@@ -126,9 +151,15 @@ namespace Code.BattleSystem
         /// <param name="action">The battleaction to execute this "turn"</param>
         private async void SetAction(IBattleAction action)
         {
+            _playerOneTokenViewModel.LookAtTarget();
+            
             HidePlayerBattleActionPanel(); //player has taken a move, hide the UI
             ShowActionPanel(action); //show the action panel
             await Task.Delay(1300);
+            
+            //Perform the visual effects phase
+            
+
             _battleSystem.PerformAction(action);//trigger the attack a little earlier to allow animation to play
             UpdatePlayerViewModels();
             await Task.Delay(200);
@@ -168,6 +199,7 @@ namespace Code.BattleSystem
             else
             {
                 ShowAllBattleUI();
+                _playerOneTokenViewModel.LookAtCamera();
             }
         }
 
@@ -308,7 +340,8 @@ namespace Code.BattleSystem
         }
 
         private void ShowPlayerBattleActionPanel()
-        {
+        {            
+            _playerOneTokenViewModel.LookAtCamera();
             _playerBattleActionViewModel.SetVisibility(true);
         }
         
@@ -362,9 +395,17 @@ namespace Code.BattleSystem
         #endregion
 
         
+        #region Player Token control
+
+        private void SetTokensToIdle()
+        {
+            
+        }
+        #endregion
+        
         #region I want to change textures I'm sorry
 
-        public void UpdatePlayerMaterial()
+        public void UpdatePlayerTokenWorldMaterial()
         {
             _playerMaterial.SetTexture("_MainTex", _playerData.HighResIcon);
         }

@@ -17,6 +17,7 @@ MonoBehaviour:
   Health: 25
   UseURLBrain: 1
   URL: https://fablemon.riftweaver.io/v1/fablemon
-  AttackActionData: {fileID: 0}
-  HealActionData: {fileID: 0}
-  GuardActionData: {fileID: 0}
+  AttackActionData: {fileID: 11400000, guid: 30930a93e918e4ae49462e80cbb57b15, type: 2}
+  HealActionData: {fileID: 11400000, guid: afbf8a25531084f5a858cb03f97495a7, type: 2}
+  GuardActionData: {fileID: 11400000, guid: 69079f79ce94c48ec9d902850e497ce0, type: 2}
+  HighResIcon: {fileID: 0}

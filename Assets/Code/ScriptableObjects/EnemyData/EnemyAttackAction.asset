@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 468c902ae5b34cf8900d1a0c504b6104, type: 3}
-  m_Name: EnemyAttackActionHolder 3
+  m_Name: EnemyAttackAction
   m_EditorClassIdentifier: 
-  ActionType: 3
-  ActionName: URLBased
-  HPDamage: 0
+  BattleActionType: 1
+  ActionName: Tentacle Slam
+  HPDamage: 12
   HealAmount: 0
   DoesApplyGuard: 0
+  Icon: {fileID: 0}

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468c902ae5b34cf8900d1a0c504b6104, type: 3}
   m_Name: EnemyHealAction
   m_EditorClassIdentifier: 
-  ActionType: 3
-  ActionName: URLBased
+  BattleActionType: 2
+  ActionName: Energy Gather
   HPDamage: 0
-  HealAmount: 0
+  HealAmount: 8
   DoesApplyGuard: 0
+  Icon: {fileID: 0}

@@ -1,4 +1,5 @@
 using System;
+using Code.ScriptableObjects;
 
 namespace Code.BattleSystem
 {   
@@ -51,6 +52,15 @@ namespace Code.BattleSystem
             HealAmount = healAmount;
             ApplyGuard = applyGuard;
             BattleActionType = actionType;
+        }
+        
+        public BattleActionParameters(BattleActionData data) : this()
+        {
+            MoveName = data.ActionName;
+            Damage = data.HPDamage;
+            HealAmount = data.HealAmount;
+            ApplyGuard = data.DoesApplyGuard;
+            BattleActionType = data.BattleActionType;
         }
     }
 

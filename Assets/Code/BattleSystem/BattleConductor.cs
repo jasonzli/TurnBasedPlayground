@@ -185,14 +185,17 @@ namespace Code.BattleSystem
             //Enemy turn
             if (_turnOrder[turnIndex] == _battleSystem.PlayerTwo)
             {
-                IBattleAction urlAction = await FetchAction();
-                if (urlAction == null)
-                {
-                    ShowErrorPanel();
-                    return;
-                }
+                // URL actions no longer work because of the api being closed
+                //IBattleAction urlAction = await FetchAction();
+                // if (urlAction == null)
+                // {
+                //     ShowErrorPanel();
+                //     return;
+                // }
 
-                SetAction(urlAction);
+                IBattleAction enemyAction = RandomEnemyAction();
+                SetAction(enemyAction);
+                
             }
             //Our turn
             else
@@ -200,6 +203,31 @@ namespace Code.BattleSystem
                 ShowAllBattleUI();
                 _playerOneTokenViewModel.LookAtCamera();
             }
+        }
+
+        private BattleAction RandomEnemyAction()
+        {
+            // do one of three possible enemy battle actions
+            // Attack, Heal, or Guard, with a 1/3 chance of each
+            int randomAction = UnityEngine.Random.Range(0, 3);
+            BattleActionData enemyActionData;
+            switch (randomAction)
+            {
+                case 0:
+                    enemyActionData = _enemyData.AttackActionData;
+                    break;
+                case 1:
+                    enemyActionData = _enemyData.HealActionData;
+                    break;
+                case 2:
+                    enemyActionData = _enemyData.GuardActionData;
+                    break;
+                default:
+                    enemyActionData = _enemyData.AttackActionData;
+                    break;
+            }
+            
+            return new BattleAction(enemyActionData.AsSafeBattleActionParameters(), _battleSystem.PlayerTwo, _battleSystem.PlayerOne);
         }
 
         //URL only action, called from the error panel
